@@ -14,17 +14,14 @@ export default function ConnectWallet () {
   }
   return (
     <>
-    <a className={`wallet_connected ${CWName}`} data-bs-toggle="modal" data-bs-target="#connectWallet">
-        <div className="Wallet-Connect">
-          <p>0xbAu7...f08a</p>
-        </div>
-        <div className="Wallet-NotConnect">
-          <p>Connect Wallet</p>
-        </div>
-    </a>
-
-   
-</>
+      <a className={`wallet_connected ${CWName}`} data-bs-toggle="modal" data-bs-target="#connectWallet">
+          <div className="Wallet-Connect">
+            <p>0xbAu7...f08a</p>
+          </div>
+          <div className="Wallet-NotConnect">
+            <p>Connect Wallet</p>
+          </div>
+      </a>
+    </>
   );
 }
-

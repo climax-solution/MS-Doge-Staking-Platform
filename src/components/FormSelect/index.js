@@ -31,9 +31,8 @@ const FormSelect = ({ defaultValue,openValue,title,options, ...attrs }) => {
 				<i className={`icon ${isOpen && "open"}`}></i>
 				</div>
 				<div className={`dropdown-body ${isOpen && 'open'}`}>
-				{items.map(item => (
-					console.log(item.value),
-					<div className={`dropdown-item ${item.value == selectedItem && 'selected'}`} onClick={e => handleItemClick(e.target.id)} id={item.value}>
+				{items.map((item, idx) => (
+					<div className={`dropdown-item ${item.value == selectedItem && 'selected'}`} onClick={e => handleItemClick(e.target.id)} id={item.value} key={idx}>
 						<img src={item.img}/>
 						{item.label}
 					</div>

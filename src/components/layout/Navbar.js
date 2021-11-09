@@ -69,7 +69,7 @@ return (
                         <a className="nav-link" href="#0" onClick={handleToggle}>Stake</a>
                         <ul className="sub-menu">
                            {SubMenu.map((SubMenu, idx) => (
-                              <li>
+                              <li key={idx}>
                                  <Link to={SubMenu.link}>
                                     {SubMenu.label}
                                  </Link>
