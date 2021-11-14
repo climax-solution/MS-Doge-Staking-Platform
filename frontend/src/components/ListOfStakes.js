@@ -21,7 +21,7 @@ export default function ListOfStakes() {
    const { active, account, library, connector, activate, deactivate } = useWeb3React();
    const handleConnectMetamaskWallet = () => {
       try {
-         activate(injected);
+         activate(injected)
        } catch (ex) {
          console.log(ex);
        }
@@ -100,7 +100,6 @@ export default function ListOfStakes() {
       //  }
    }
 
-   console.log(active);
    return (
       <React.Fragment>
          <div className="list-stake ms">
