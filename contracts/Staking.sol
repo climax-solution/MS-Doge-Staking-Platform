@@ -27,9 +27,12 @@ contract Staking {
         bool isExisted;
     }
     
+    struct StakingEnd {
+        mapping(uint => StakingItem) _stakingItem;
+    }
     address[] private _stakedAddressList;
     uint256 private _totalStakedUserCount;
-    mapping(address => StakingItem) private _stakingList;
+    mapping(address => StakingEnd) private _stakingList;
     
     constructor(address _stakingToken, address _rewardsToken, uint _rewardRate) {
         stakingToken = IERC20(_stakingToken);
