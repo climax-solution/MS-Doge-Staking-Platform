@@ -16,7 +16,7 @@ function App() {
         
         <Router>
           <Switch>
-            <Route path="/" component={Coin} />
+            <Route path="/" exact component={Coin} />
             <Route path="/coin-bill" component={CoinBill} />
           </Switch>
         </Router>

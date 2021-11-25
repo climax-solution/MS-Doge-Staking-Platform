@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useCallback } from 'react'
 
 //to connect metamask
@@ -9,16 +9,34 @@ import WalletConnect from "@walletconnect/client";
 import QRCodeModal from "@walletconnect/qrcode-modal";
 //to connect Coinbase, Fortmatic, Fortmatic, portis wallet
 // import { WalletLinkConnector } from '@web3-react/walletlink-connector'
-
+import getWeb3 from './utility/getWeb3';
 import slogo from "../assets/images/icons/logo.png";
 import metamask from "../assets/images/icons/metamask-icon.svg";
 import coin from "../assets/images/icons/coin-base.jpg";
 import fortmatic from "../assets/images/icons/fortmatic-icon.svg";
 import wallet from "../assets/images/icons/wallet-icon.svg";
+import Staking from "../contracts/Staking.json";
 
-export default function ListOfStakes() {
+const StakingAddress = "0x091b55913bc4Bfaa0a89B4C65a193870c6C902C2";
+
+export default function ListOfStakes(props) {
    const [counter, setCounter] = useState(1);
    const { active, account, library, connector, activate, deactivate } = useWeb3React();
+   const [_stakedList, setStakedList] = useState([]);
+   const [_staking, setStaking] = useState({});
+   const [_MSDOGE, setMSDOGE] = useState({});
+
+   // useEffect(async() => {
+   //    const web3 = await getWeb3();
+   //    setWeb3(web3);
+   //    const MsDoge = new web3.eth.Contract(Staking, StakingAddress);
+   //    setMSDOGE(MsDoge);
+   // },[])
+
+   // useEffect(async() => {
+   //    if (account && _MSDOGE ) await getStakedList();
+   // },[account, _MSDOGE])
+
    const handleConnectMetamaskWallet = () => {
       try {
          activate(injected)
@@ -92,12 +110,18 @@ export default function ListOfStakes() {
       //    console.log(ex);
       //  }
    }
+
    const handleConnectPortis = () => {
       // try {
       //    activate(WalletLinkConnector.Portis);
       //  } catch (ex) {
       //    console.log(ex);
       //  }
+   }
+
+   const getStakedList = async() => {
+      const list = await _MSDOGE.methods.getStakedList().call({ from: account });
+      setStakedList(list);
    }
 
    return (
@@ -117,7 +141,7 @@ export default function ListOfStakes() {
             <div className="row">
                <div className="col-12">
                   <table className="stake-list-sel fliter-box w-100 my-4 d-none d-md-block">
-                     <tbody>
+                     <thead>
                         <tr>
                            <td className="p-2">
                               <select>
@@ -157,131 +181,73 @@ export default function ListOfStakes() {
                            <td className="p-2"></td>
                            <td className="p-2"></td>
                         </tr>
-                        <tr className="m-0">
-                           {/* <td className="p-2">
-                              <h5><b>09/10/2021</b></h5>
-                           </td>
-                           <td className="p-2">
-                              <h5><b>1.0 </b> MsDoge</h5>
-                           </td>
-                           <td className="p-2">
-                              <h5><b>0.5%</b></h5>
-                           </td>
-                           <td className="p-2">
-                              <h5>10 MSDOGE <br /> 10 LORIA</h5>
-                           </td>
-                           <td className="p-2">
-                              <h5><b className="text-read red">30d 10:28</b></h5>
-                           </td>
-                           <td className="p-2"> <button type="button" className="table-btn py-2 px-4">Claim</button></td>
-                           <td className="p-2">
-                              <a href="#" className="dots">
-                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                                 </svg>
-                              </a>
-                           </td> */}
-                        </tr>
-                        <tr className="m-0">
-                           <td className="p-2">
-                              <h5><b>09/10/2021</b></h5>
-                           </td>
-                           <td className="p-2">
-                              <h5><b>1.0 </b> MsDoge</h5>
-                           </td>
-                           <td className="p-2">
-                              <h5><b>0.5%</b></h5>
-                           </td>
-                           <td className="p-2">
-                              <h5>10 MSDOGE <br /> 10 LORIA</h5>
-                           </td>
-                           <td className="p-2">
-                              <h5><b className="text-read red">30d 10:28</b></h5>
-                           </td>
-                           <td className="p-2"> <button type="button" className="table-btn py-2 px-4">Claim</button></td>
-                           <td className="p-2">
-                              <a href="#" className="dots">
-                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                                 </svg>
-                              </a>
-                           </td>
-                        </tr>
-                        <tr className="m-0">
-                           <td className="p-2">
-                              <h5><b>09/10/2021</b></h5>
-                           </td>
-                           <td className="p-2">
-                              <h5><b>1.0 </b> MsDoge</h5>
-                           </td>
-                           <td className="p-2">
-                              <h5><b>0.5%</b></h5>
-                           </td>
-                           <td className="p-2">
-                              <h5>10 MSDOGE <br /> 10 LORIA</h5>
-                           </td>
-                           <td className="p-2">
-                              <h5><b className="text-read red">30d 10:28</b></h5>
-                           </td>
-                           <td className="p-2"> <button type="button" className="table-btn py-2 px-4">Claim</button></td>
-                           <td className="p-2">
-                              <a href="#" className="dots">
-                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                                 </svg>
-                              </a>
-                           </td>
-                        </tr>
-                        <tr className="m-0">
-                           <td className="p-2">
-                              <h5><b>09/10/2021</b></h5>
-                           </td>
-                           <td className="p-2">
-                              <h5><b>1.0 </b> MsDoge</h5>
-                           </td>
-                           <td className="p-2">
-                              <h5><b>0.5%</b></h5>
-                           </td>
-                           <td className="p-2">
-                              <h5>10 MSDOGE <br /> 10 LORIA</h5>
-                           </td>
-                           <td className="p-2">
-                              <h5><b className="text-read green">Ready to claim</b></h5>
-                           </td>
-                           <td className="p-2 stake-btn"> <button data-bs-toggle="modal" data-bs-target="#claimCoinPopup" type="button" className="table-btn btn py-2 px-4">Claim</button></td>
-                           <td className="p-2">
-                              <a className="dots text-read" data-bs-toggle="modal" data-bs-target="#cancelStake">
-                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                                 </svg>
-                              </a>
-                           </td>
-                        </tr>
-                        <tr className="m-0">
-                           <td className="p-2">
-                              <h5><b>09/10/2021</b></h5>
-                           </td>
-                           <td className="p-2">
-                              <h5><b>1.0 </b> MsDoge</h5>
-                           </td>
-                           <td className="p-2">
-                              <h5><b>0.5%</b></h5>
-                           </td>
-                           <td className="p-2">
-                              <h5>10 MSDOGE <br /> 10 LORIA</h5>
-                           </td>
-                           <td className="p-2">
-                              <h5><b className="text-read red">30d 10:28</b></h5>
-                           </td>
-                           <td className="p-2"> <button type="button" className="table-btn py-2 px-4">Claim</button></td>
-                           <td className="p-2">
-                              <a href="#" className="dots">
-                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                                 </svg>
-                              </a>
-                           </td>
-                        </tr>
+                     </thead>
+                     <tbody>
+                        {
+                           _stakedList.map(item => {
+                              return (
+                                 <>
+                                    <tr className="m-0">
+                                       <td className="p-2">
+                                          <h5><b>09/10/2021</b></h5>
+                                       </td>
+                                       <td className="p-2">
+                                          <h5><b>1.0 </b> MsDoge</h5>
+                                       </td>
+                                       <td className="p-2">
+                                          <h5><b>0.5%</b></h5>
+                                       </td>
+                                       <td className="p-2">
+                                          <h5>10 MSDOGE <br /> 10 LORIA</h5>
+                                       </td>
+                                       <td className="p-2">
+                                          <h5><b className="text-read red">30d 10:28</b></h5>
+                                       </td>
+                                       <td className="p-2"> <button type="button" className="table-btn py-2 px-4">Claim</button></td>
+                                       <td className="p-2 action-button">
+                                          <a href="#" className="dots">
+                                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                                             </svg>
+                                          </a>
+                                       </td>
+                                    </tr>
+                                    <tr className="mt-1">
+                                       <td className="p-2">
+                                          <h5><b>09/10/2021</b></h5>
+                                       </td>
+                                       <td className="p-2">
+                                          <h5><b>1.0 </b> MsDoge</h5>
+                                       </td>
+                                       <td className="p-2">
+                                          <h5><b>0.5%</b></h5>
+                                       </td>
+                                       <td className="p-2">
+                                          <h5>10 MSDOGE <br /> 10 LORIA</h5>
+                                       </td>
+                                       <td className="p-2">
+                                          <h5><b className="text-read green">Ready to claim</b></h5>
+                                       </td>
+                                       <td className="p-2 stake-btn"> <button data-bs-toggle="modal" data-bs-target="#claimCoinPopup" type="button" className="table-btn btn py-2 px-4">Claim</button></td>
+                                       <td className="p-2 action-button">
+                                          <a className="dots text-read" data-bs-toggle="modal" data-bs-target="#cancelStake">
+                                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                                             </svg>
+                                          </a>
+                                       </td>
+                                    </tr>
+                                 </>
+                              )
+                           })
+                        }
+                        {
+                           !_stakedList.length &&
+                              <tr className="empty-row pt-3 pb-3 mt-1">
+                                 <td colSpan="7" className="justify-content-center w-100">No Stake</td>
+                              </tr>
+                        }
+                        
                      </tbody>
                   </table>
                   <ul className="stake-list-sel fliter-box d-flex flex-wrap my-4 ls p-0 d-block d-md-none">
@@ -372,7 +338,7 @@ export default function ListOfStakes() {
                                              </svg>
                                           </span>
                                           <input type="text" value={counter} readOnly/>
-                                          <span className="plus" onClick={() => setCounter(counter + 1)}>
+                                          <span className="plus" onClick={(counter < 85 ? () => setCounter(counter + 1) : () => null)}>
                                              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M5.25 5.25V0.75H6.75V5.25H11.25V6.75H6.75V11.25H5.25V6.75H0.75V5.25H5.25Z" fill="#161F2F" />
                                              </svg>
@@ -395,7 +361,7 @@ export default function ListOfStakes() {
                                        <h4 className="green-box">0.5% APY</h4>
                                        <p>The APY is calculated by multiplying the amount of months staked with 0.5. Maximum of 20% APY. Please note that cancelling the stake early will penalize you. Refer to our documentation: <a href="#" className="click-btn">Click Here</a> </p>
                                     </div>
-                                    <button className="mt-3 approve-btn text-white text-center py-4 w-100">Approve 0.5 URUS</button>
+                                    <button className="mt-3 approve-btn text-white text-center py-4 w-100">Approve</button>
                                  </div>
                               </div>
                            </div>
@@ -422,27 +388,27 @@ export default function ListOfStakes() {
                            <div className="input-bal">
                               <div className="row">
                                  <div className="mb-4 col-sm-12">
-                                    <div className="connect-wallet-login-border d-flex" onClick={handleConnectMetamaskWallet}>
+                                    <div className="connect-wallet-login-border d-flex" onClick={handleConnectMetamaskWallet} data-bs-dismiss="modal">
                                        <img src={metamask} width="20" height="20" />
                                        <div style={{ margin: "auto auto" }}>Metamask</div>
                                     </div>
                                     
-                                    <div className="connect-wallet-login-border d-flex"  onClick={ handleConnectWalletConnect }>
+                                    <div className="connect-wallet-login-border d-flex"  onClick={ handleConnectWalletConnect } data-bs-dismiss="modal">
                                        <img src={wallet} width="20" height="20" />
                                        <div style={{ margin: "auto auto" }}>WalletConnect</div>
                                     </div>
 
-                                    <div className="connect-wallet-login-border d-flex">
-                                       <img src={coin} width="20" height="20" />
+                                    <div className="connect-wallet-login-border d-flex" data-bs-dismiss="modal">
+                                       <img src={coin} width="20" height="20"/>
                                        <div style={{ margin: "auto auto" }} onClick={ handleConnectFortmatic }>Coinbase</div>
                                     </div>
 
-                                    <div className="connect-wallet-login-border d-flex">
+                                    <div className="connect-wallet-login-border d-flex" data-bs-dismiss="modal">
                                        <img src={fortmatic} width="20" height="20" />
                                        <div style={{ margin: "auto auto" }} onClick={ handleConnectPortis }>Fortmatic</div>
                                     </div>
 
-                                    <div className="connect-wallet-login-border d-flex">
+                                    <div className="connect-wallet-login-border d-flex" data-bs-dismiss="modal">
                                        <img src={metamask} width="20" height="20" />
                                        <div style={{ margin: "auto auto" }}>Portis</div>
                                     </div>

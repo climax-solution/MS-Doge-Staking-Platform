@@ -1,20 +1,27 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useWeb3React } from '@web3-react/core'
 import MSDOGE from '../contracts/MSDOGE.json'
-import { useWeb3React } from "@web3-react/core"
-import { useWallet, UseWalletProvider } from 'use-wallet'
 
-export default function AccountBalance() {
-   const context = useWeb3React();
-   useEffect(() => {
-   },[])
-   console.log(context);
+const DogeAddress = "0xA80A864d3B01532844c19001bFfd494e50382686";
+
+export default function AccountBalance(props) {
+   const {account} = useWeb3React();
+   const [_balance, setBalance] = useState('---');
+   const { web3, coin: _MSDOGE } = props;
+
+   useEffect(async () => {
+      if (account) {
+         const balance = await _MSDOGE.methods.balanceOf(account).call();
+         setBalance(web3.utils.fromWei(balance, 'gwei'));
+      }
+   },[account])
 
    return (
       <React.Fragment>
          <div className="gray-bg ms p-4 mb-4 mb-md-0">
             <div className="acc-heading-text ms">
                <h6 className="mb-3">Account balance</h6>
-               <h2>1.14005 <span>URUS</span></h2>
+               <h2>{_balance} <span>URUS</span></h2>
                <h4 className="mb-2">0.0448859 <span>ETH</span></h4>
                <h5>0 <span>URUS-ETH LP</span></h5>
             </div>

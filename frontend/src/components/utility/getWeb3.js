@@ -21,3 +21,5 @@ const getWeb3 = () => {
 
     return web3;
 }
+
+export default getWeb3;
