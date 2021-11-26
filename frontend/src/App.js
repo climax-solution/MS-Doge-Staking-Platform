@@ -7,6 +7,7 @@ import Coin from "./pages/coin";
 import CoinBill from "./pages/coinBill";
 import { NotificationContainer } from "react-notifications";
 import 'react-notifications/lib/notifications.css';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 function getLibrary(provider, connector) {
   return new Web3Provider(provider) // this will vary according to whether you use e.g. ethers or web3.js

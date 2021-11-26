@@ -8,6 +8,7 @@ import TotalMarketInfo from '../components/TotalMarketInfo/index';
 import MSDOGE from '../contracts/MSDOGE.json'
 import getWeb3 from '../components/utility/getWeb3.js';
 import STAKING from "../contracts/Staking.json";
+import Loading from '../components/Loading';
 
 const StakingAddress = "0x8D619aeA6A443c1cE564deF31c287FfEA2B88Fa4";
 const DogeAddress = "0x09C80b6F8Cd84fe90f109BB4Cd2331bE53E2f220";
@@ -41,6 +42,7 @@ export default function coin() {
     return (
         <React.Fragment>
             <Navbar />
+            <Loading/>
             <div className="coin-main py-60 ms">
                 <div className="container-lg">
                     <div className="row">
@@ -59,6 +61,7 @@ export default function coin() {
                                 web3={_web3}
                                 stake={_Stake}
                                 balance={_balance}
+                                coin={_Coin}
                             />
                         </div>
                     </div>

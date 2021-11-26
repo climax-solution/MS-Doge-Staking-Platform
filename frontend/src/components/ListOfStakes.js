@@ -16,13 +16,14 @@ import metamask from "../assets/images/icons/metamask-icon.svg";
 import coin from "../assets/images/icons/coin-base.jpg";
 import fortmatic from "../assets/images/icons/fortmatic-icon.svg";
 import wallet from "../assets/images/icons/wallet-icon.svg";
-
+const StakingAddress = "0x8D619aeA6A443c1cE564deF31c287FfEA2B88Fa4";
+const DogeAddress = "0x09C80b6F8Cd84fe90f109BB4Cd2331bE53E2f220";
 export default function ListOfStakes(props) {
    const [counter, setCounter] = useState(1);
    const { active, account, library, connector, activate, deactivate } = useWeb3React();
    const [_stakedList, setStakedList] = useState([]);
    const [_stakingAmount, setStakingAmount] = useState('');
-   const { web3, stake: _Staking, balance } = props; 
+   const { web3, stake: _Staking, balance, coin: _MSDOGE } = props; 
    const [modalAttr, setModalAttr] = useState({
       "data-bs-toggle": "modal",
       "data-bs-target": "#exampleModal"
@@ -120,11 +121,17 @@ export default function ListOfStakes(props) {
       setStakedList(list);
    }
 
-   const Staking = () => {
+   const Staking = async() => {
       if (_stakingAmount < 0.5) {
          NotificationManager.warning("Staking amount must be greater or equal that 0.5");
          return;
       }
+
+      await _MSDOGE.methods.approve(StakingAddress, web3.utils.toWei(_stakingAmount.toString(), "gwei"))
+      .send({ from: account })
+      .on('receipt', async(res) => {
+         
+      });
    }
 
    return (
@@ -323,7 +330,7 @@ export default function ListOfStakes(props) {
                                  <div className="row">
                                     <div className="col-6">
                                        <h4 className="mb-3">Input</h4>
-                                       <input type="number" className="input-box" placeholder="0.5" value={_stakingAmount} onChange={ (e) => setStakingAmount(e.value) }/>
+                                       <input type="number" className="input-box" placeholder="0.5" value={_stakingAmount} onChange={ (e) => setStakingAmount(e.target.value) }/>
                                     </div>
                                     <div className="col-6 text-end">
                                        <h4 className="mb-3">Balance: {balance} URUS</h4>
