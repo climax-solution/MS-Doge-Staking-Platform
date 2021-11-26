@@ -7,6 +7,7 @@ import { injected } from "../components/wallet/connectors"
 //to connect Walletconnect
 import WalletConnect from "@walletconnect/client";
 import QRCodeModal from "@walletconnect/qrcode-modal";
+import { NotificationManager } from "react-notifications";
 //to connect Coinbase, Fortmatic, Fortmatic, portis wallet
 // import { WalletLinkConnector } from '@web3-react/walletlink-connector'
 import getWeb3 from './utility/getWeb3';
@@ -15,27 +16,22 @@ import metamask from "../assets/images/icons/metamask-icon.svg";
 import coin from "../assets/images/icons/coin-base.jpg";
 import fortmatic from "../assets/images/icons/fortmatic-icon.svg";
 import wallet from "../assets/images/icons/wallet-icon.svg";
-import Staking from "../contracts/Staking.json";
-
-const StakingAddress = "0x091b55913bc4Bfaa0a89B4C65a193870c6C902C2";
 
 export default function ListOfStakes(props) {
    const [counter, setCounter] = useState(1);
    const { active, account, library, connector, activate, deactivate } = useWeb3React();
    const [_stakedList, setStakedList] = useState([]);
-   const [_staking, setStaking] = useState({});
-   const [_MSDOGE, setMSDOGE] = useState({});
+   const [_stakingAmount, setStakingAmount] = useState('');
+   const { web3, stake: _Staking, balance } = props; 
+   const [modalAttr, setModalAttr] = useState({
+      "data-bs-toggle": "modal",
+      "data-bs-target": "#exampleModal"
+   })
 
-   // useEffect(async() => {
-   //    const web3 = await getWeb3();
-   //    setWeb3(web3);
-   //    const MsDoge = new web3.eth.Contract(Staking, StakingAddress);
-   //    setMSDOGE(MsDoge);
-   // },[])
-
-   // useEffect(async() => {
-   //    if (account && _MSDOGE ) await getStakedList();
-   // },[account, _MSDOGE])
+   useEffect(async() => {
+      console.log(_Staking);
+      if  (account && _Staking) await getStakedList();
+   },[account])
 
    const handleConnectMetamaskWallet = () => {
       try {
@@ -120,8 +116,15 @@ export default function ListOfStakes(props) {
    }
 
    const getStakedList = async() => {
-      const list = await _MSDOGE.methods.getStakedList().call({ from: account });
+      const list = await _Staking.methods.getStakedList().call();
       setStakedList(list);
+   }
+
+   const Staking = () => {
+      if (_stakingAmount < 0.5) {
+         NotificationManager.warning("Staking amount must be greater or equal that 0.5");
+         return;
+      }
    }
 
    return (
@@ -134,7 +137,10 @@ export default function ListOfStakes(props) {
                </div>
                <div className="">
                   <div className="stake-btn">
-                     <a className="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">Stake</a>
+                     <a
+                        className="btn"
+                        {...(active && modalAttr)}
+                     >Stake</a>
                   </div>
                </div>
             </div>
@@ -311,16 +317,16 @@ export default function ListOfStakes(props) {
                      </button>
                      <div className="heading-text-popupm">
                         <h5 className="my-3 text-center ">Transactions</h5>
-                        <form action="">
+                        <div className="staking-modal">
                            <div className="input-bal">
                               <div className="inner-bore p-3">
                                  <div className="row">
                                     <div className="col-6">
                                        <h4 className="mb-3">Input</h4>
-                                       <input type="text" className="input-box" placeholder="0.5" />
+                                       <input type="number" className="input-box" placeholder="0.5" value={_stakingAmount} onChange={ (e) => setStakingAmount(e.value) }/>
                                     </div>
                                     <div className="col-6 text-end">
-                                       <h4 className="mb-3">Balance: 1.14005 URUS</h4>
+                                       <h4 className="mb-3">Balance: {balance} URUS</h4>
                                        <div className="small-logo-photo d-flex justify-content-end">
                                           <img src={slogo} width="20" />
                                           <div style={{marginLeft: "10px"}}>MsDoge</div>
@@ -361,11 +367,14 @@ export default function ListOfStakes(props) {
                                        <h4 className="green-box">0.5% APY</h4>
                                        <p>The APY is calculated by multiplying the amount of months staked with 0.5. Maximum of 20% APY. Please note that cancelling the stake early will penalize you. Refer to our documentation: <a href="#" className="click-btn">Click Here</a> </p>
                                     </div>
-                                    <button className="mt-3 approve-btn text-white text-center py-4 w-100">Approve</button>
+                                    <button
+                                       className="mt-3 approve-btn text-white text-center py-4 w-100" type="button"
+                                       onClick={Staking}
+                                    >Approve</button>
                                  </div>
                               </div>
                            </div>
-                        </form>
+                        </div>
                      </div>
                   </div>
                </div>

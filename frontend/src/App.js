@@ -5,6 +5,9 @@ import { BrowserRouter as Router, Switch,Route,} from "react-router-dom"
 import "./App.css";
 import Coin from "./pages/coin";
 import CoinBill from "./pages/coinBill";
+import { NotificationContainer } from "react-notifications";
+import 'react-notifications/lib/notifications.css';
+
 function getLibrary(provider, connector) {
   return new Web3Provider(provider) // this will vary according to whether you use e.g. ethers or web3.js
 }
@@ -13,7 +16,7 @@ function App() {
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
       <div className="App">
-        
+        <NotificationContainer/>
         <Router>
           <Switch>
             <Route path="/" exact component={Coin} />
