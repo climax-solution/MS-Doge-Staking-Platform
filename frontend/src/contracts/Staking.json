@@ -74,13 +74,13 @@
           },
           {
             "internalType": "uint256",
-            "name": "_rate",
+            "name": "_period",
             "type": "uint256"
           },
           {
-            "internalType": "bool",
-            "name": "isExisted",
-            "type": "bool"
+            "internalType": "uint256",
+            "name": "_rate",
+            "type": "uint256"
           }
         ],
         "internalType": "struct Staking.StakingItem[]",
@@ -161,6 +161,11 @@
       {
         "internalType": "uint256",
         "name": "_amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_period",
         "type": "uint256"
       }
     ],

@@ -1,4 +1,3 @@
-import { SpinnerInfinity } from 'spinners-react';
 import Loader from "react-loader-spinner";
 import "./style.css";
 

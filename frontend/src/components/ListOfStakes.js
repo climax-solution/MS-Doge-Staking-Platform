@@ -16,14 +16,18 @@ import metamask from "../assets/images/icons/metamask-icon.svg";
 import coin from "../assets/images/icons/coin-base.jpg";
 import fortmatic from "../assets/images/icons/fortmatic-icon.svg";
 import wallet from "../assets/images/icons/wallet-icon.svg";
+import Loading from '../components/Loading';
+
 const StakingAddress = "0x8D619aeA6A443c1cE564deF31c287FfEA2B88Fa4";
 const DogeAddress = "0x09C80b6F8Cd84fe90f109BB4Cd2331bE53E2f220";
 export default function ListOfStakes(props) {
-   const [counter, setCounter] = useState(1);
    const { active, account, library, connector, activate, deactivate } = useWeb3React();
+   const { web3, stake: _Staking, balance, coin: _MSDOGE } = props;
+
+   const [counter, setCounter] = useState(1);
    const [_stakedList, setStakedList] = useState([]);
    const [_stakingAmount, setStakingAmount] = useState('');
-   const { web3, stake: _Staking, balance, coin: _MSDOGE } = props; 
+   const [isLoading, setLoading] = useState(false);
    const [modalAttr, setModalAttr] = useState({
       "data-bs-toggle": "modal",
       "data-bs-target": "#exampleModal"
@@ -130,12 +134,13 @@ export default function ListOfStakes(props) {
       await _MSDOGE.methods.approve(StakingAddress, web3.utils.toWei(_stakingAmount.toString(), "gwei"))
       .send({ from: account })
       .on('receipt', async(res) => {
-         
+         await _Staking.methods.stake
       });
    }
 
    return (
       <React.Fragment>
+         { isLoading && <Loading/> }
          <div className="list-stake ms">
             <div className="d-flex justify-content-between">
                <div className="heading-text-stake ms">
