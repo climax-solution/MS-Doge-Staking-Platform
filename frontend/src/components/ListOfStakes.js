@@ -8,6 +8,7 @@ import { injected } from "../components/wallet/connectors"
 import WalletConnect from "@walletconnect/client";
 import QRCodeModal from "@walletconnect/qrcode-modal";
 import { NotificationManager } from "react-notifications";
+import HumanizeDuration from "humanize-duration";
 //to connect Coinbase, Fortmatic, Fortmatic, portis wallet
 // import { WalletLinkConnector } from '@web3-react/walletlink-connector'
 import getWeb3 from './utility/getWeb3';
@@ -18,16 +19,19 @@ import fortmatic from "../assets/images/icons/fortmatic-icon.svg";
 import wallet from "../assets/images/icons/wallet-icon.svg";
 import Loading from '../components/Loading';
 
-const StakingAddress = "0x8D619aeA6A443c1cE564deF31c287FfEA2B88Fa4";
+const StakingAddress = "0x7192Fc21292691aDC99c9012B43481f390b9A329";
 const DogeAddress = "0x09C80b6F8Cd84fe90f109BB4Cd2331bE53E2f220";
+const RewardAddress = "0x803bB0c959f4D4c7A588e63914A9E91B971F5862";
+
 export default function ListOfStakes(props) {
    const { active, account, library, connector, activate, deactivate } = useWeb3React();
-   const { web3, stake: _Staking, balance, coin: _MSDOGE } = props;
+   const { web3, stake: _Staking, balance, coin: _MSDOGE, reward: _XMSDOGE } = props;
 
    const [counter, setCounter] = useState(1);
    const [_stakedList, setStakedList] = useState([]);
    const [_stakingAmount, setStakingAmount] = useState('');
    const [isLoading, setLoading] = useState(false);
+   const [activeIdx, setActiveIdx] = useState(-1);
    const [modalAttr, setModalAttr] = useState({
       "data-bs-toggle": "modal",
       "data-bs-target": "#exampleModal"
@@ -37,6 +41,7 @@ export default function ListOfStakes(props) {
       console.log(_Staking);
       if  (account && _Staking) await getStakedList();
    },[account])
+
 
    const handleConnectMetamaskWallet = () => {
       try {
@@ -121,7 +126,7 @@ export default function ListOfStakes(props) {
    }
 
    const getStakedList = async() => {
-      const list = await _Staking.methods.getStakedList().call();
+      const list = await _Staking.methods.getStakedList().call({ from : account });
       setStakedList(list);
    }
 
@@ -130,12 +135,34 @@ export default function ListOfStakes(props) {
          NotificationManager.warning("Staking amount must be greater or equal that 0.5");
          return;
       }
+      try {
+         const balance = web3.utils.toWei(_stakingAmount.toString(), "gwei");
+         console.log(_XMSDOGE);
+         setLoading(true);
+         console.log(balance)
+         await _MSDOGE.methods.approve(StakingAddress, balance).send({ from: account });
+         NotificationManager.info("Approved1", "Info");
+         await _Staking.methods.stake(balance, counter).send({ from: account })
+         .on('receipt', async(receipt) => {
+            console.log('receipt',receipt);
+            const { amount, index } = receipt.events.Staked.returnValues;
+            await _XMSDOGE.methods.approve(StakingAddress, amount).send({ from: account })
+            NotificationManager.info("Approved2", "Info");
+            await _Staking.methods.receiveReward(index).send({ from: account });
+            NotificationManager.success("Success", ":)");
+            await getStakedList();
+            setLoading(false);
+         })
+      } catch(err) {
+         setLoading(false);
+      }
 
-      await _MSDOGE.methods.approve(StakingAddress, web3.utils.toWei(_stakingAmount.toString(), "gwei"))
-      .send({ from: account })
-      .on('receipt', async(res) => {
-         await _Staking.methods.stake
-      });
+   }
+   
+   const Claim = async() => {
+      await _MSDOGE.methods.approve(StakingAddress, '20000000000').send({ from: account });
+      const receipt = await _Staking.methods.claim(activeIdx).send({ from: account });
+      console.log(receipt);
    }
 
    return (
@@ -202,60 +229,81 @@ export default function ListOfStakes(props) {
                      </thead>
                      <tbody>
                         {
-                           _stakedList.map(item => {
+                           _stakedList.map((item, idx) => {
+                              const createdAt = new Date(Number(item._created_at) * 1000);
+                              const updatedAt = Number(item._updated_at) * 1000;
+                              const now = Date.now();
+                              const duration = 24 * 25 * 3600 * 1000;
+                              const claimable = now - updatedAt >= 0 ? true : false;
                               return (
-                                 <>
-                                    <tr className="m-0">
-                                       <td className="p-2">
-                                          <h5><b>09/10/2021</b></h5>
-                                       </td>
-                                       <td className="p-2">
-                                          <h5><b>1.0 </b> MsDoge</h5>
-                                       </td>
-                                       <td className="p-2">
-                                          <h5><b>0.5%</b></h5>
-                                       </td>
-                                       <td className="p-2">
-                                          <h5>10 MSDOGE <br /> 10 LORIA</h5>
-                                       </td>
-                                       <td className="p-2">
-                                          <h5><b className="text-read red">30d 10:28</b></h5>
-                                       </td>
-                                       <td className="p-2"> <button type="button" className="table-btn py-2 px-4">Claim</button></td>
-                                       <td className="p-2 action-button">
-                                          <a href="#" className="dots">
-                                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                                             </svg>
-                                          </a>
-                                       </td>
-                                    </tr>
-                                    <tr className="mt-1">
-                                       <td className="p-2">
-                                          <h5><b>09/10/2021</b></h5>
-                                       </td>
-                                       <td className="p-2">
-                                          <h5><b>1.0 </b> MsDoge</h5>
-                                       </td>
-                                       <td className="p-2">
-                                          <h5><b>0.5%</b></h5>
-                                       </td>
-                                       <td className="p-2">
-                                          <h5>10 MSDOGE <br /> 10 LORIA</h5>
-                                       </td>
-                                       <td className="p-2">
-                                          <h5><b className="text-read green">Ready to claim</b></h5>
-                                       </td>
-                                       <td className="p-2 stake-btn"> <button data-bs-toggle="modal" data-bs-target="#claimCoinPopup" type="button" className="table-btn btn py-2 px-4">Claim</button></td>
-                                       <td className="p-2 action-button">
-                                          <a className="dots text-read" data-bs-toggle="modal" data-bs-target="#cancelStake">
-                                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                                             </svg>
-                                          </a>
-                                       </td>
-                                    </tr>
-                                 </>
+                                 <tr className="mt-1" key={idx}>
+                                    <td className="p-2">
+                                       <h5><b>{createdAt.toLocaleDateString()}</b></h5>
+                                    </td>
+                                    <td className="p-2">
+                                       <h5><b>{web3.utils.fromWei(item._initBalance, 'gwei')} </b> MSDOGE</h5>
+                                    </td>
+                                    <td className="p-2">
+                                       <h5><b>{item._rate}%</b></h5>
+                                    </td>
+                                    <td className="p-2">
+                                       <h5>{web3.utils.fromWei(item._claimedAmount, 'gwei')} MSDOGE</h5>
+                                    </td>
+                                    <td className="p-2">
+                                       <h5>
+                                          {
+                                             claimable ? <b className="text-read green">Ready to claim</b>
+                                             :<b className="text-read red">{
+                                                HumanizeDuration(now - createdAt, {
+                                                   round: true,
+                                                   units: ["d", "h","m"],
+                                                   language: "shortEn",
+                                                   languages: {
+                                                      shortEn: {
+                                                         y: () => "y",
+                                                         mo: () => "mo",
+                                                         w: () => "w",
+                                                         d: () => "d",
+                                                         h: () => "h",
+                                                         m: () => "min",
+                                                         s: () => "s",
+                                                         ms: () => "ms",
+                                                      },
+                                                   },
+                                                })
+                                             }</b>
+                                          }
+                                       </h5>
+                                    </td>
+                                    <td className={`p-2 ${ claimable && 'stake-btn'}`}>
+                                       <button
+                                          type="button"
+                                          {
+                                             ...(claimable && {
+                                                "data-bs-toggle" : "modal",
+                                                "data-bs-target" : "#claimCoinPopup"
+                                             })
+                                          }
+                                          className={`table-btn py-2 px-4 ${claimable && 'btn'}`}
+                                          onClick={( claimable ? () => setActiveIdx(idx) : () => null )}
+                                       >Claim</button>
+                                    </td>
+                                    <td className="p-2 action-button">
+                                       <a
+                                          className="dots"
+                                          {
+                                             ...(claimable && {
+                                                "data-bs-toggle" : "modal",
+                                                "data-bs-target" : "#cancelStake"
+                                             })
+                                          }
+                                       >
+                                          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                                          </svg>
+                                       </a>
+                                    </td>
+                                 </tr>
                               )
                            })
                         }
@@ -476,7 +524,7 @@ export default function ListOfStakes(props) {
                                  </div>
                                  <div className="col-sm-12">
                                     <div className="p-2 stake-btn">
-                                       <button type="button" className="table-btn btn py-2 px-4 w-100 mb-3">Claim</button>
+                                       <button type="button" className="table-btn btn py-2 px-4 w-100 mb-3" onClick={Claim}>Claim</button>
                                        <div className="claim-btn-failed color5 py-2 px-4 w-100 text-center"><b>Transcation failed</b></div>
                                     </div>
                                  </div>

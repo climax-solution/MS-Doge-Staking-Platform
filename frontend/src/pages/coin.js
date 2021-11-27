@@ -8,16 +8,18 @@ import TotalMarketInfo from '../components/TotalMarketInfo/index';
 import MSDOGE from '../contracts/MSDOGE.json'
 import getWeb3 from '../components/utility/getWeb3.js';
 import STAKING from "../contracts/Staking.json";
+import XMSDOGE from "../contracts/XMSDOGE.json";
 
-const StakingAddress = "0x8D619aeA6A443c1cE564deF31c287FfEA2B88Fa4";
+const StakingAddress = "0x7192Fc21292691aDC99c9012B43481f390b9A329";
 const DogeAddress = "0x09C80b6F8Cd84fe90f109BB4Cd2331bE53E2f220";
-const RewardAddress = "0xd5e1b16d2619049E8a8feeC2557026adD996b672";
+const RewardAddress = "0x803bB0c959f4D4c7A588e63914A9E91B971F5862";
 
 export default function coin() {
     const { active, account, library, connector, activate, deactivate } = useWeb3React();
     const [_web3, setWeb3] = useState({});
     const [_Coin, setCoin] = useState({});
     const [_Stake, setStake] = useState({});
+    const [_Reward, setReward] = useState({});
     const [_balance, setBalance] = useState('---');
 
     useEffect(async() => {
@@ -25,6 +27,8 @@ export default function coin() {
         setWeb3(web3);
         const Coin = new web3.eth.Contract(MSDOGE, DogeAddress);
         const Staking = new web3.eth.Contract(STAKING, StakingAddress);
+        const RewardToken = new web3.eth.Contract(XMSDOGE, RewardAddress);
+        setReward(RewardToken);
         setCoin(Coin);
         setStake(Staking);
     },[])
@@ -37,7 +41,8 @@ export default function coin() {
         }
         else setBalance("---");
   
-     },[account])
+     },[account]);
+
     return (
         <React.Fragment>
             <Navbar />
@@ -60,6 +65,7 @@ export default function coin() {
                                 stake={_Stake}
                                 balance={_balance}
                                 coin={_Coin}
+                                reward={_Reward}
                             />
                         </div>
                     </div>
