@@ -1861,3 +1861,7 @@ div.acc-heading-text h2 > span {
 .color-primary{
   color: var(--primary) !important;
 }
+
+.withdraw-btn.active {
+  background: var(--primary);
+}

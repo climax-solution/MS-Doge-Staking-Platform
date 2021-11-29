@@ -19,13 +19,20 @@ import fortmatic from "../assets/images/icons/fortmatic-icon.svg";
 import wallet from "../assets/images/icons/wallet-icon.svg";
 import Loading from '../components/Loading';
 
-const StakingAddress = "0x7192Fc21292691aDC99c9012B43481f390b9A329";
+const StakingAddress = "0x9945996eA20dE6158948D706428EE1bd6607CEde";
 const DogeAddress = "0x09C80b6F8Cd84fe90f109BB4Cd2331bE53E2f220";
 const RewardAddress = "0x803bB0c959f4D4c7A588e63914A9E91B971F5862";
 
 export default function ListOfStakes(props) {
    const { active, account, library, connector, activate, deactivate } = useWeb3React();
-   const { web3, stake: _Staking, balance, coin: _MSDOGE, reward: _XMSDOGE } = props;
+   const {
+      web3,
+      stake: _Staking,
+      balance,
+      coin: _MSDOGE,
+      reward: _XMSDOGE, 
+      loriaCoin: _LORIACOIN,
+   } = props;
 
    const [counter, setCounter] = useState(1);
    const [_stakedList, setStakedList] = useState([]);
@@ -41,7 +48,6 @@ export default function ListOfStakes(props) {
       console.log(_Staking);
       if  (account && _Staking) await getStakedList();
    },[account])
-
 
    const handleConnectMetamaskWallet = () => {
       try {
@@ -142,13 +148,12 @@ export default function ListOfStakes(props) {
          console.log(balance)
          await _MSDOGE.methods.approve(StakingAddress, balance).send({ from: account });
          NotificationManager.info("Approved1", "Info");
+         await _XMSDOGE.methods.approve(StakingAddress, balance).send({ from: account })
+         NotificationManager.info("Approved2", "Info");
          await _Staking.methods.stake(balance, counter).send({ from: account })
          .on('receipt', async(receipt) => {
             console.log('receipt',receipt);
             const { amount, index } = receipt.events.Staked.returnValues;
-            await _XMSDOGE.methods.approve(StakingAddress, amount).send({ from: account })
-            NotificationManager.info("Approved2", "Info");
-            await _Staking.methods.receiveReward(index).send({ from: account });
             NotificationManager.success("Success", ":)");
             await getStakedList();
             setLoading(false);
@@ -160,9 +165,16 @@ export default function ListOfStakes(props) {
    }
    
    const Claim = async() => {
-      await _MSDOGE.methods.approve(StakingAddress, '20000000000').send({ from: account });
+      setLoading(true);
+      const DogeR = _stakedList[activeIdx]._initBalance;
+      const LoriaR = _stakedList[activeIdx]._initBalance / 1000;
+
+      await _MSDOGE.methods.approve(StakingAddress, DogeR).send({ from: account });
+      await _LORIACOIN.methods.approve(StakingAddress, LoriaR).send({ from: account });
+
       const receipt = await _Staking.methods.claim(activeIdx).send({ from: account });
-      console.log(receipt);
+      NotificationManager.success('Claimed Success', ':O');
+      setLoading(false);
    }
 
    return (
@@ -246,8 +258,9 @@ export default function ListOfStakes(props) {
                                     <td className="p-2">
                                        <h5><b>{item._rate}%</b></h5>
                                     </td>
-                                    <td className="p-2">
-                                       <h5>{web3.utils.fromWei(item._claimedAmount, 'gwei')} MSDOGE</h5>
+                                    <td className="p-2 flex-column justify-content-evenly">
+                                       <h5>{web3.utils.fromWei(item._claimedDoge, 'gwei')} MSDOGE</h5>
+                                       <h5>{web3.utils.fromWei(item._claimedLoria, 'mwei')} CRYPTO</h5>
                                     </td>
                                     <td className="p-2">
                                        <h5>
@@ -515,17 +528,17 @@ export default function ListOfStakes(props) {
                               <div className="row">
                                  <div className="mb-4 col-sm-12 d-flex justify-content-between">
                                     <div><small>Pool reward</small></div>
-                                    <div><small>1.14005 URUS</small></div>
+                                    <div><small>{activeIdx > -1 && web3.utils.fromWei(_stakedList[activeIdx]._initBalance, 'gwei')} MSDOGE</small></div>
                                  </div>
 
-                                 <div className="mb-4 col-sm-12 d-flex justify-content-between">
+                                 {/* <div className="mb-4 col-sm-12 d-flex justify-content-between">
                                     <div><small>Penalty Pool reward</small></div>
                                     <div><small>Balance: 1.14005 URUS</small></div>
-                                 </div>
+                                 </div> */}
                                  <div className="col-sm-12">
                                     <div className="p-2 stake-btn">
                                        <button type="button" className="table-btn btn py-2 px-4 w-100 mb-3" onClick={Claim}>Claim</button>
-                                       <div className="claim-btn-failed color5 py-2 px-4 w-100 text-center"><b>Transcation failed</b></div>
+                                       {/* <div className="claim-btn-failed color5 py-2 px-4 w-100 text-center"><b>Transcation failed</b></div> */}
                                     </div>
                                  </div>
                               </div>
