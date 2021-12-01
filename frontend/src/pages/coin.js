@@ -13,8 +13,9 @@ import CRYPTOLORIA from "../contracts/CRYPTOLORIA.json";
 
 const StakingAddress = "0x9945996eA20dE6158948D706428EE1bd6607CEde";
 const DogeAddress = "0x09C80b6F8Cd84fe90f109BB4Cd2331bE53E2f220";
-const RewardAddress = "0x803bB0c959f4D4c7A588e63914A9E91B971F5862";
+const DogeReward = "0x803bB0c959f4D4c7A588e63914A9E91B971F5862";
 const LoriaAddress = "0xeA58d5AFddDb7d591aB4783AD07706816e4164Df";
+const LoriaReward = "0x507A1c5a8041203999cCcaD4d6d9386bfB420757";
 
 export default function coin() {
     const { active, account, library, connector, activate, deactivate } = useWeb3React();
@@ -32,7 +33,7 @@ export default function coin() {
         setWeb3(web3);
         const Coin = new web3.eth.Contract(MSDOGE, DogeAddress);
         const Staking = new web3.eth.Contract(STAKING, StakingAddress);
-        const RewardToken = new web3.eth.Contract(XMSDOGE, RewardAddress);
+        const RewardToken = new web3.eth.Contract(XMSDOGE, DogeReward);
         const Loria = new web3.eth.Contract(CRYPTOLORIA, LoriaAddress);
         setReward(RewardToken);
         setCoin(Coin);
