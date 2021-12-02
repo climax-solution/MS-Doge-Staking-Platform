@@ -9,9 +9,10 @@ import coin from "../assets/images/icons/coin-base.jpg";
 import fortmatic from "../assets/images/icons/fortmatic-icon.svg";
 import wallet from "../assets/images/icons/wallet-icon.svg";
 import logo from '../assets/images/favicon.png';
+import { connect } from 'react-redux';
 const StakingAddress = "0x9945996eA20dE6158948D706428EE1bd6607CEde";
 
-export default function ListOfStakes(props) {
+function ListOfStakes(props) {
    const { account, activate } = useWeb3React();
    const [boundTabs, setBoundTabs] = useState(false);
    const {
@@ -33,9 +34,12 @@ export default function ListOfStakes(props) {
    })
 
    useEffect(async() => {
-      console.log(_Staking);
       if  (account && _Staking) await getStakedList();
    },[account])
+
+   useEffect(async(preprops) => {
+      if (preprops != props && account && _Staking) await getStakedList();
+   },[props])
 
    const connectMetamask = () => {
       try {
@@ -50,33 +54,7 @@ export default function ListOfStakes(props) {
       setStakedList(list);
    }
 
-   const Staking = async() => {
-      if (_stakingAmount < 0.5) {
-         NotificationManager.warning("Staking amount must be greater or equal that 0.5");
-         return;
-      }
-      try {
-         const balance = web3.utils.toWei(_stakingAmount.toString(), "gwei");
-         console.log(_XMSDOGE);
-         setLoading(true);
-         console.log(balance)
-         await _MSDOGE.methods.approve(StakingAddress, balance).send({ from: account });
-         NotificationManager.info("Approved1", "Info");
-         await _XMSDOGE.methods.approve(StakingAddress, balance).send({ from: account })
-         NotificationManager.info("Approved2", "Info");
-         await _Staking.methods.stake(balance, counter).send({ from: account })
-         .on('receipt', async(receipt) => {
-            console.log('receipt',receipt);
-            const { amount, index } = receipt.events.Staked.returnValues;
-            NotificationManager.success("Success", ":)");
-            await getStakedList();
-            setLoading(false);
-         })
-      } catch(err) {
-         setLoading(false);
-      }
-
-   }
+   
    
    const Claim = async() => {
       setLoading(true);
@@ -148,20 +126,27 @@ export default function ListOfStakes(props) {
                               const updatedLoria = Number(item._updated_loria) * 1000;
                               const now = Date.now();
                               const duration = 24 * 25 * 3600 * 1000;
-                              const claimable = now - updatedDoge >= 0 ? true : false;
+                              const elig = item._stakedToken ? item._dogeEli : item._loriaEli;
+                              const claimable = now - updatedDoge >= elig * duration ? true : false;
                               return (
-                                 <tr className="m-0" key={idx}>
+                                 <tr className="m-0 mt-1" key={idx}>
                                     <td className="p-2">
-                                       <h5><b>09/10/2021</b></h5>
+                                       <h5><b>{createdAt.toLocaleDateString()}</b></h5>
                                     </td>
                                     <td className="p-2">
-                                       <h5><b>1.0 </b> MsDoge</h5>
+                                       <h5>
+                                          <b>
+                                             {
+                                                web3.utils.fromWei(item._initBalance, `${item._stakedToken == 0 ? "gwei" : "mwei"}`)
+                                             }
+                                          </b> {item._stakedToken == 0 ? "MSDOGE" : "CRYPTO"}</h5>
                                     </td>
                                     <td className="p-2">
-                                       <h5><b>0.5%</b> <br /><b>0.5%</b></h5>
+                                       <h5><b>{item._dogeAPY}%</b> <br /><b>{item._loriaAPY}%</b></h5>
                                     </td>
                                     <td className="p-2">
-                                       <h5>10 MSDOGE <br /> 10 LORIA</h5>
+                                       <h5>
+                                          {web3.utils.fromWei(item._claimedDoge, "gwei")} MSDOGE <br /> {web3.utils.fromWei(item._claimedLoria, "mwei")} LORIA</h5>
                                     </td>
                                     <td className="p-2">
                                        <h5>
@@ -247,7 +232,7 @@ export default function ListOfStakes(props) {
                            })
                         }
                         
-                        <tr className="m-0">
+                        {/* <tr className="m-0 mt-1">
                            <td className="p-2">
                               <h5><b>09/10/2021</b></h5>
                            </td>
@@ -271,7 +256,7 @@ export default function ListOfStakes(props) {
                                  </svg>
                               </a>
                            </td>
-                        </tr>
+                        </tr> */}
                         {
                            !_stakedList.length &&
                               <tr className="empty-row pt-3 pb-3 mt-1">
@@ -678,3 +663,8 @@ export default function ListOfStakes(props) {
    )
 }
 
+const mapStateToProps = ({ changed }) => ({
+   updated: changed.updated
+})
+
+export default connect(mapStateToProps, null)(ListOfStakes);

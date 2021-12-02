@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import { Web3ReactProvider } from "@web3-react/core"
 import Web3Provider from "web3"
+import { Provider } from 'react-redux';
+import store from './store';
 
 import './index.css';
 import App from './App';
@@ -13,9 +15,11 @@ function getLibrary(provider, connector) {
 
 ReactDOM.render(
   <React.Fragment>
-    <Web3ReactProvider getLibrary={getLibrary}>
-      <App />
-    </Web3ReactProvider>
+    <Provider store={store}>
+      <Web3ReactProvider getLibrary={getLibrary}>
+        <App />
+      </Web3ReactProvider>
+    </Provider>
   </React.Fragment>,
   document.getElementById('root')
 );

@@ -7,7 +7,7 @@ const data = {
 export default function (state = data, action) {
     switch(action.type) {
         case CHANGE_STATUS:
-            return { ...state, updated : !updated }
+            return { ...state, updated : !state.updated }
             break;
         default:
             return { ...state };

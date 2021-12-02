@@ -8,50 +8,57 @@ import ListOfStakes from '../components/ListOfStakes';
 import ListOfBounds from '../components/ListOfBounds';
 import TotalMarketInfo from '../components/TotalMarketInfo/index';
 
-import MSDOGE from '../contracts/MSDOGE.json'
 import getWeb3 from '../components/utility/getWeb3.js';
 import STAKING from "../contracts/Staking.json";
+import MSDOGE from '../contracts/MSDOGE.json'
 import XMSDOGE from "../contracts/XMSDOGE.json";
+import XCRYPTO from "../contracts/XCRYPTO.json";
 import CRYPTOLORIA from "../contracts/CRYPTOLORIA.json";
+import { connect } from 'react-redux';
 
-const StakingAddress = "0x9945996eA20dE6158948D706428EE1bd6607CEde";
+const StakingAddress = "0x6FCe71404f365B58A935287d2C71626b29dC0eF2";
 const DogeAddress = "0x09C80b6F8Cd84fe90f109BB4Cd2331bE53E2f220";
 const LoriaAddress = "0xeA58d5AFddDb7d591aB4783AD07706816e4164Df";
-const DogeReward = "0x803bB0c959f4D4c7A588e63914A9E91B971F5862";
-const LoriaReward = "0x507A1c5a8041203999cCcaD4d6d9386bfB420757";
+const DogeRewardAddress = "0x803bB0c959f4D4c7A588e63914A9E91B971F5862";
+const LoriaRewardAddress = "0x9B765A7B677B4E651da19593A8d5274beBdcE47f";
 
-export default function Coin() {
+function Coin(props) {
 
     const { active, account, library, connector, activate, deactivate } = useWeb3React();
     const [_web3, setWeb3] = useState({});
-    const [_Coin, setCoin] = useState({});
     const [_Stake, setStake] = useState({});
-    const [_Reward, setReward] = useState({});
+    const [_DogeCoin, setDogeCoin] = useState({});
+    const [_LoriaCoin, setLoriaCoin] = useState({});
+    const [_DogeReward, setDogeReward] = useState({});
+    const [_LoriaReward, setLoriaReward] = useState({});
     const [_dogeBalance, setDogeBalance] = useState('---');
     const [_loriaBalance, setLoriaBalance] = useState('---');
     const [_ethBalance, setETHBalance] = useState("---");
-    const [_LoriaCoin, setLoriaCoin] = useState({});
 
     const [stakeBalance, setStakeBalance] = useState(false)
 
     //data-bs-toggle="modal" data-bs-target="#exampleModal"
     useEffect(async() => {
         const web3 = await getWeb3();
-        setWeb3(web3);
-        const Coin = new web3.eth.Contract(MSDOGE, DogeAddress);
         const Staking = new web3.eth.Contract(STAKING, StakingAddress);
-        const RewardToken = new web3.eth.Contract(XMSDOGE, DogeReward);
+        const Doge = new web3.eth.Contract(MSDOGE, DogeAddress);
         const Loria = new web3.eth.Contract(CRYPTOLORIA, LoriaAddress);
-        setReward(RewardToken);
-        setCoin(Coin);
+        const dogeReward = new web3.eth.Contract(XMSDOGE, DogeRewardAddress);
+        const loriaReward = new web3.eth.Contract(XCRYPTO, LoriaRewardAddress);
+
+        setWeb3(web3);
         setStake(Staking);
+        setDogeCoin(Doge);
         setLoriaCoin(Loria);
+        setDogeReward(dogeReward);
+        setLoriaReward(loriaReward);
+
     },[])
 
-    useEffect(async () => {
+    useEffect(async (preprops) => {
       
-        if (account) {
-            let doge = await _Coin.methods.balanceOf(account).call();
+        if (account || account && preprops != props) {
+            let doge = await _DogeCoin.methods.balanceOf(account).call();
             let loria = await _LoriaCoin.methods.balanceOf(account).call();
             let eth = await _web3.eth.getBalance(account);
             doge = _web3.utils.fromWei(doge, 'gwei');
@@ -67,7 +74,7 @@ export default function Coin() {
             setLoriaBalance("---");
         }
   
-     },[account]);
+     },[account, props]);
     return (
         <>
             <Navbar />
@@ -83,13 +90,14 @@ export default function Coin() {
                                 stakeBalance === false ?
                                 <AccountBalanceStake
                                     web3={_web3}
-                                    coin={_Coin}
+                                    dogeCoin={_DogeCoin}
+                                    loriaCoin={_LoriaCoin}
+                                    dogeReward={_DogeReward}
+                                    loriaReward={_LoriaReward}
                                     dogeB={_dogeBalance}
                                     loriaB={_loriaBalance}
                                     ethB={_ethBalance}
-                                    loriaCoin={_LoriaCoin}
                                     stake={_Stake}
-                                    reward={_Reward}
                                 />
                                 :
                                 <AcountBalanceBonds
@@ -127,8 +135,8 @@ export default function Coin() {
                                         dogeB={_dogeBalance}
                                         loriaB={_loriaBalance}
                                         loriaCoin={_LoriaCoin}
-                                        coin={_Coin}
-                                        reward={_Reward}
+                                        coin={_DogeCoin}
+                                        reward={_DogeReward}
                                     />
                                 : <ListOfBounds />
                             }
@@ -141,3 +149,9 @@ export default function Coin() {
         </>
     )
 }
+
+const mapStateToProps = ({ changed }) => ({
+    updated: changed.updated
+})
+
+export default connect(mapStateToProps, null)(Coin);

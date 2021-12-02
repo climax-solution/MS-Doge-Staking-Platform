@@ -7,6 +7,11 @@ import CoinBill from './pages/coinBill';
 import {
   BrowserRouter as Router, Switch, Route,
 } from "react-router-dom";
+
+import { NotificationContainer } from "react-notifications";
+import 'react-notifications/lib/notifications.css';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+
 // import styled, {ThemeProvider} from 'styled-components';
 // import {lightTheme, darkTheme, GlobalStyles} from './theme';
 
@@ -25,6 +30,7 @@ function App() {
     // <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
     //   <GlobalStyles/>
     <div className="App">
+      <NotificationContainer/>
       {/* <StyledApp> <button onClick={() => themeToggler()}>button</button> */}
       <Router>
         <Switch>

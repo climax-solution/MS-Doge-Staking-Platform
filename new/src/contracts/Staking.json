@@ -3,17 +3,22 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_stakingToken",
+        "name": "_dogeStaking",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "_loriaToken",
+        "name": "_loriaStaking",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "_rewardsToken",
+        "name": "_dogeReward",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_loriaReward",
         "type": "address"
       }
     ],
@@ -174,6 +179,20 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "allClaim",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "allWithdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -184,6 +203,32 @@
     "name": "claim",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "dogeReward",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "dogeStaking",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -240,10 +285,28 @@
   },
   {
     "inputs": [],
+    "name": "getNow",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "getStakedList",
     "outputs": [
       {
         "components": [
+          {
+            "internalType": "uint256",
+            "name": "_stakedToken",
+            "type": "uint256"
+          },
           {
             "internalType": "uint256",
             "name": "_initBalance",
@@ -286,7 +349,12 @@
           },
           {
             "internalType": "uint256",
-            "name": "_updated_at",
+            "name": "_updated_doge",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_updated_loria",
             "type": "uint256"
           },
           {
@@ -323,10 +391,10 @@
   },
   {
     "inputs": [],
-    "name": "loriaToken",
+    "name": "loriaReward",
     "outputs": [
       {
-        "internalType": "contract IERC20",
+        "internalType": "address",
         "name": "",
         "type": "address"
       }
@@ -336,9 +404,15 @@
   },
   {
     "inputs": [],
-    "name": "multipleClaim",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "name": "loriaStaking",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -362,19 +436,6 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "rewardsToken",
-    "outputs": [
-      {
-        "internalType": "contract IERC20",
-        "name": "",
-        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -436,6 +497,11 @@
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "_type",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
         "name": "_amount",
         "type": "uint256"
       },
@@ -451,23 +517,10 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "stakingToken",
-    "outputs": [
-      {
-        "internalType": "contract IERC20",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "balance",
+        "name": "idx",
         "type": "uint256"
       }
     ],

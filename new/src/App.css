@@ -2028,3 +2028,15 @@ div.acc-heading-text h2 > span {
 .slippage_description{
   color: #aaa;
 }
+
+.select-coin option:before {
+  content: "12";
+}
+
+.dd-header-title  span {
+  align-items: center;
+}
+
+.dd-header > span {
+  display: none !important;
+}
