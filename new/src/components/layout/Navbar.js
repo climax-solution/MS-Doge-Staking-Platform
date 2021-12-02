@@ -65,7 +65,7 @@ export default function Navbar() {
                                     <a className="nav-link active" href="/">Home</a>
                                  </li>
                                  <li className={`nav-item has-submenu ${isActive ? "hide-menu" : "show-menu"}`}>
-                                    <a className="nav-link" href="#0" onClick={() => handleToggle()}>Stake</a>
+                                    <a className="nav-link" href="#0" onClick={() => handleToggle()}>DeFi</a>
                                     <ul className="sub-menu">
                                        {SubMenu.map((SubMenu, idx) => (
                                           <li key={idx}>
