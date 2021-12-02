@@ -10,7 +10,8 @@ import fortmatic from "../assets/images/icons/fortmatic-icon.svg";
 import wallet from "../assets/images/icons/wallet-icon.svg";
 import logo from '../assets/images/favicon.png';
 import { connect } from 'react-redux';
-const StakingAddress = "0x9945996eA20dE6158948D706428EE1bd6607CEde";
+
+const StakingAddress = "0x427E5c6Cca3C918CD3CD7C2744aD130F5D11449b";
 
 function ListOfStakes(props) {
    const { account, activate } = useWeb3React();
@@ -21,11 +22,12 @@ function ListOfStakes(props) {
       balance,
       coin: _MSDOGE,
       reward: _XMSDOGE, 
-      loriaCoin: _LORIACOIN,
+      loriaCoin: _CRYPTOCOIN,
    } = props;
 
    const [_stakedList, setStakedList] = useState([]);
    const [_stakingAmount, setStakingAmount] = useState('');
+   const [_claimNow, setClaimNow] = useState('');
    const [isLoading, setLoading] = useState(false);
    const [activeIdx, setActiveIdx] = useState(-1);
    const [modalAttr, setModalAttr] = useState({
@@ -51,18 +53,18 @@ function ListOfStakes(props) {
 
    const getStakedList = async() => {
       const list = await _Staking.methods.getStakedList().call({ from : account });
+      const now = await _Staking.methods.getNow().call();
       setStakedList(list);
+      setClaimNow(now);
    }
 
    
    
    const Claim = async() => {
       setLoading(true);
-      const DogeR = _stakedList[activeIdx]._initBalance;
-      const LoriaR = _stakedList[activeIdx]._initBalance / 1000;
 
-      await _MSDOGE.methods.approve(StakingAddress, DogeR).send({ from: account });
-      await _LORIACOIN.methods.approve(StakingAddress, LoriaR).send({ from: account });
+      const LoriaR = _stakedList[activeIdx]._initBalance / 1000;
+      await _CRYPTOCOIN.methods.approve(StakingAddress, LoriaR).send({ from: account });
 
       const receipt = await _Staking.methods.claim(activeIdx).send({ from: account });
       NotificationManager.success('Claimed Success', ':O');
@@ -122,12 +124,11 @@ function ListOfStakes(props) {
                         {
                            _stakedList.map((item, idx) => {
                               const createdAt = new Date(Number(item._created_at) * 1000);
-                              const updatedDoge = Number(item._updated_doge) * 1000;
+                              const updatedAt = Number(item._updated_at);
                               const updatedLoria = Number(item._updated_loria) * 1000;
-                              const now = Date.now();
-                              const duration = 24 * 25 * 3600 * 1000;
+                              const duration = 24 * 25 * 3600;
                               const elig = item._stakedToken ? item._dogeEli : item._loriaEli;
-                              const claimable = now - updatedDoge >= elig * duration ? true : false;
+                              const claimable = _claimNow - updatedAt >= elig * duration ? true : false;
                               return (
                                  <tr className="m-0 mt-1" key={idx}>
                                     <td className="p-2">
@@ -142,11 +143,17 @@ function ListOfStakes(props) {
                                           </b> {item._stakedToken == 0 ? "MSDOGE" : "CRYPTO"}</h5>
                                     </td>
                                     <td className="p-2">
-                                       <h5><b>{item._dogeAPY}%</b> <br /><b>{item._loriaAPY}%</b></h5>
+                                       <h5><b>{item._apy}%</b></h5>
                                     </td>
                                     <td className="p-2">
                                        <h5>
-                                          {web3.utils.fromWei(item._claimedDoge, "gwei")} MSDOGE <br /> {web3.utils.fromWei(item._claimedLoria, "mwei")} LORIA</h5>
+                                          <b>
+                                          {
+                                             web3.utils.fromWei(item._claimedBalance,`${item._stakedToken == 0 ? "gwei" : "mwei"}`)
+                                          }
+                                          </b>
+                                          { item._stakedToken == 0 ? " CRYPTO" : " MSDOGE" }
+                                          </h5>
                                     </td>
                                     <td className="p-2">
                                        <h5>
@@ -154,27 +161,7 @@ function ListOfStakes(props) {
                                              claimable ? <b className="text-read green">Ready to claim</b>
                                              :<b className="text-read red">
                                                 {
-                                                   HumanizeDuration(now - updatedDoge, {
-                                                      round: true,
-                                                      units: ["d", "h","m"],
-                                                      language: "shortEn",
-                                                      languages: {
-                                                         shortEn: {
-                                                            y: () => "y",
-                                                            mo: () => "mo",
-                                                            w: () => "w",
-                                                            d: () => "d",
-                                                            h: () => "h",
-                                                            m: () => "min",
-                                                            s: () => "s",
-                                                            ms: () => "ms",
-                                                         },
-                                                      },
-                                                   })
-                                                }
-                                                <br/>
-                                                {
-                                                   HumanizeDuration(now - updatedLoria, {
+                                                   HumanizeDuration((_claimNow - updatedAt) * 1000, {
                                                       round: true,
                                                       units: ["d", "h","m"],
                                                       language: "shortEn",
@@ -243,7 +230,7 @@ function ListOfStakes(props) {
                               <h5><b>0.5%</b> <br /><b>0.5%</b></h5>
                            </td>
                            <td className="p-2">
-                              <h5>10 MSDOGE <br /> 10 LORIA</h5>
+                              <h5>10 MSDOGE <br /> 10 CRYPTO</h5>
                            </td>
                            <td className="p-2">
                               <h5><b className="text-read green">Ready to claim</b></h5>

@@ -319,42 +319,22 @@
           },
           {
             "internalType": "uint256",
-            "name": "_dogeAPY",
+            "name": "_apy",
             "type": "uint256"
           },
           {
             "internalType": "uint256",
-            "name": "_dogeEli",
+            "name": "_eligibility",
             "type": "uint256"
           },
           {
             "internalType": "uint256",
-            "name": "_loriaAPY",
+            "name": "_claimedBalance",
             "type": "uint256"
           },
           {
             "internalType": "uint256",
-            "name": "_loriaEli",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "_claimedDoge",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "_claimedLoria",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "_updated_doge",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "_updated_loria",
+            "name": "_updated_at",
             "type": "uint256"
           },
           {

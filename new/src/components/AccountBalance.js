@@ -7,7 +7,8 @@ import Loading from '../components/Loading';
 import { updateStatus } from "../store/actions/change.action";
 import slogo from "../assets/images/icons/logo.png";
 
-const StakingAddress = "0x6FCe71404f365B58A935287d2C71626b29dC0eF2";
+const StakingAddress = "0x427E5c6Cca3C918CD3CD7C2744aD130F5D11449b";
+
 const duration = 24 * 25 * 3600 ;
 
 const locations = [
@@ -126,22 +127,18 @@ function AccountBalance(props) {
          rewardLoriaAmount = 0;
 
       list.map(item => {
-         const updated_doge = item._updated_doge;
-         const updated_loria = item._updated_loria;
+         const updated_at = item._updated_at;
 
-         let dogeCount = Math.floor((now - updated_doge) / (duration * item._dogeEli));
-         let loriaCount = Math.floor((now - updated_loria) / (duration * item._loriaEli));
+         let count = Math.floor((now - updated_at) / (duration * item._dogeEli));
 
          if (item._stakedToken == 0) {
             stakedDogeAmount += item._initBalance;
-            if (dogeCount > 0) rewardDogeAmount += dogeCount * item._initBalance * item._dogeAPY / 100;
-            if (loriaCount > 0) rewardLoriaAmount += loriaCount * item._initBalance * item._loriaAPY / 100 / 1000;
+            if (count > 0) rewardLoriaAmount += count * item._initBalance * item._dogeAPY / 100 / 1000;
          }
 
          else {
             stakedLoriaAmount += item._initBalance;
-            if (dogeCount > 0) rewardDogeAmount += dogeCount * item._initBalance * item._dogeAPY / 100 * 1000;
-            if (loriaCount > 0) rewardLoriaAmount += loriaCount * item._initBalance * item._loriaAPY / 100;
+            if (count > 0) rewardDogeAmount += count * item._initBalance * item._dogeAPY / 100 * 1000;
          }
 
       })
@@ -189,7 +186,7 @@ function AccountBalance(props) {
                </div>
                <div className="row border-top">
                   <div className="col-6 py-2">
-                     <h3>{_unClaimedLoria} <span>LORIA</span></h3>
+                     <h3>{_unClaimedLoria} <span>CRYPTO</span></h3>
                   </div>
                   <div className="col-6 py-2 text-end">
                      <h3><span>Unclaimed reward</span></h3>
