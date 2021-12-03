@@ -54,14 +54,36 @@ function AccountBalance(props) {
    const withdraw = async() => {
       setLoading(true);
       try {
-         const total = web3.utils.toWei(_totalStaking.toString(), 'gwei');
-         await _XMSDOGE.methods.approve(StakingAddress, total).send({ from: account });
-         await _MSDOGE.methods.approve(StakingAddress, total).send({ from: account });
-         await _Staking.methods.withdraw(total).send({ from: account })
-         .on('receipt', res => {
-            NotificationManager.succes(":D")
+         const totalDoge = web3.utils.toWei(_stakedDoge.toString(), 'gwei');
+         const totalLoria = web3.utils.toWei(_stakedLoria.toString(), 'mwei');
+         let flag = false;
+         if (totalDoge > 0) {
+            await _XMSDOGE.methods.approve(StakingAddress, totalDoge).send({ from: account });
+            await _MSDOGE.methods.approve(StakingAddress, totalDoge).send({ from: account });
+            flag = true;
+         }
+
+         if (totalLoria > 0) {
+            await _CRYPTO.methods.approve(StakingAddress, totalLoria).send({ from: account });
+            await _XCRYPTO.methods.approve(StakingAddress, totalLoria).send({ from: account });
+            flag = true;
+         }
+
+         if (flag) {
+            await _Staking.methods.allWithdraw().send({ from: account })
+            .on('receipt', async(res) => {
+               await props.updateStatus();
+               await getStakedList();
+               NotificationManager.success(":D")
+               setLoading(false);
+            })
+         }
+
+         else {
+            NotificationManager.warning("No staked!", "Warning");
             setLoading(false);
-         })
+         }
+
       } catch (err) {
          setLoading(false);
       }
@@ -69,9 +91,42 @@ function AccountBalance(props) {
 
    const multipleClaim = async() => {
       setLoading(true);
-      await _MSDOGE.methods.approve(StakingAddress, web3.utils.toWei((_unClaimed * 2).toString(), 'gwei')).send({ from: account });
-      await _Staking.methods.multipleClaim().send({ from: account });
-      NotificationManager.info(";)");
+      setLoading(true);
+      try {
+         const totalDoge = web3.utils.toWei(_unClaimedDoge.toString(), 'gwei');
+         const totalLoria = web3.utils.toWei(_unClaimedLoria.toString(), 'mwei');
+         let flag = false;
+         if (totalDoge > 0) {
+            await _XMSDOGE.methods.approve(StakingAddress, totalDoge).send({ from: account });
+            await _MSDOGE.methods.approve(StakingAddress, totalDoge).send({ from: account });
+            flag = true;
+         }
+
+         if (totalLoria > 0) {
+            await _CRYPTO.methods.approve(StakingAddress, totalLoria).send({ from: account });
+            await _XCRYPTO.methods.approve(StakingAddress, totalLoria).send({ from: account });
+            flag = true;
+         }
+
+         if (flag) {
+            await _Staking.methods.multipleClaim().send({ from: account })
+            .on('receipt', async(res) => {
+               await props.updateStatus();
+               await getStakedList();
+               NotificationManager.success(":D")
+               setLoading(false);
+            })
+         }
+
+         else {
+            NotificationManager.warning("No available claim!", "Warning");
+            setLoading(false);
+         }
+
+      } catch (err) {
+         setLoading(false);
+      }
+
       setLoading(false);
    }
    
@@ -212,12 +267,34 @@ function AccountBalance(props) {
                </div>
                <div className="row border-top">
                   <div className="col-6 py-3 text-center">
-                     <button type="button" className="withdraw-btn mx-auto py-3 px-5">
+                     <button
+                        type="button"
+                        className="withdraw-btn mx-auto py-3 px-5"
+                        {
+                           ...(
+                              active && {
+                                 "data-bs-target" : "#cancelStake",
+                                 "data-bs-toggle" : "modal"
+                              }
+                           )
+                        }
+                     >
                      Unstake
                      </button>
                   </div>
                   <div className="col-6 py-3 text-center">
-                     <button type="button" className="withdraw-btn mx-auto py-3 px-5">
+                     <button
+                        type="button"
+                        className="withdraw-btn mx-auto py-3 px-5"
+                        {
+                           ...(
+                              active && {
+                                 "data-bs-target" : "#multiClaimCoinPopup",
+                                 "data-bs-toggle" : "modal"
+                              }
+                           )
+                        }
+                     >
                      Claim
                      </button>
                   </div>
@@ -329,6 +406,100 @@ function AccountBalance(props) {
                               </div>
                            </div>
                         </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         {/* Modal */}
+
+         <div className="modal fade" id="cancelStake" tabIndex="-1" aria-labelledby="cancelStake" aria-hidden="true">
+            <div className="modal-dialog">
+               <div className="modal-content">
+                  <div className="modal-body popup-card-container rel">
+                     <button type="button" className="closebtn" data-bs-dismiss="modal" aria-label="Close">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
+                        </svg>
+                     </button>
+                     <div className="heading-text-popupm">
+                        <h5 className="my-3 text-center ">Stake Settings</h5>
+                        <form action="">
+                           <div className="input-bal">
+                              <div className="row">
+
+                                 <div className="mb-4 col-sm-12 d-flex justify-content-between">
+                                    <div><small>Pool Stake 1: </small></div>
+                                    <div><small><b>{_stakedDoge}</b> MSDOGE</small></div>
+                                 </div>
+
+                                 <div className="mb-4 col-sm-12 d-flex justify-content-between">
+                                    <div><small>Pool Stake 2: </small></div>
+                                    <div><small><b>{_stakedLoria}</b> CRYPTO</small></div>
+                                 </div>
+
+                                 <div className="col-sm-12">
+                                    <div className="p-2 stake-btn">
+                                       <button
+                                          type="button"
+                                          className="table-btn color5 py-2 px-4 w-100 mb-3 text-white"
+                                          onClick={withdraw}
+                                       >Cancel Stake</button>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </form>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         {/* Modal */}
+
+         <div className="modal fade" id="multiClaimCoinPopup" tabIndex="-1" aria-labelledby="multiClaimCoinPopup" aria-hidden="true">
+            <div className="modal-dialog">
+               <div className="modal-content">
+                  <div className="modal-body popup-card-container rel">
+                     <button type="button" className="closebtn" data-bs-dismiss="modal" aria-label="Close">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
+                        </svg>
+                     </button>
+                     <div className="heading-text-popupm">
+                        <h5 className="my-3 text-center ">Claim</h5>
+                        <form action="">
+                           <div className="input-bal">
+                              <div className="row">
+                                 <div className="mb-4 col-sm-12 d-flex justify-content-between">
+                                    <div><small>Pool Reward 1</small></div>
+                                    <div><small>{_unClaimedDoge} MSDODGE</small></div>
+                                 </div>
+
+                                 <div className="mb-4 col-sm-12 d-flex justify-content-between">
+                                    <div><small>Pool Reward 2</small></div>
+                                    <div><small>{_unClaimedLoria} CRYPTO</small></div>
+                                 </div>
+
+                                 {/* <div className="mb-4 col-sm-12 d-flex justify-content-between">
+                                    <div><small>Pool Penalty</small></div>
+                                    <div><small>0.000</small></div>
+                                 </div> */}
+                                 <div className="col-sm-12">
+                                    <div className="p-2 stake-btn">
+                                       <button
+                                          type="button"
+                                          className="table-btn btn py-2 px-4 w-100 mb-3"
+                                          onClick={multipleClaim}
+                                       >Claim</button>
+                                       {/* <div className="claim-btn-failed color5 py-2 px-4 w-100 text-center"><b>Transcation failed</b></div> */}
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </form>
                      </div>
                   </div>
                </div>

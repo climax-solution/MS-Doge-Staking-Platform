@@ -125,10 +125,10 @@ function ListOfStakes(props) {
                            _stakedList.map((item, idx) => {
                               const createdAt = new Date(Number(item._created_at) * 1000);
                               const updatedAt = Number(item._updated_at);
-                              const updatedLoria = Number(item._updated_loria) * 1000;
                               const duration = 24 * 25 * 3600;
-                              const elig = item._stakedToken ? item._dogeEli : item._loriaEli;
+                              const elig = item._stakedToken == 1 ? item._dogeEli : item._loriaEli;
                               const claimable = _claimNow - updatedAt >= elig * duration ? true : false;
+
                               return (
                                  <tr className="m-0 mt-1" key={idx}>
                                     <td className="p-2">
@@ -159,27 +159,32 @@ function ListOfStakes(props) {
                                        <h5>
                                           {
                                              claimable ? <b className="text-read green">Ready to claim</b>
-                                             :<b className="text-read red">
-                                                {
-                                                   HumanizeDuration((_claimNow - updatedAt) * 1000, {
-                                                      round: true,
-                                                      units: ["d", "h","m"],
-                                                      language: "shortEn",
-                                                      languages: {
-                                                         shortEn: {
-                                                            y: () => "y",
-                                                            mo: () => "mo",
-                                                            w: () => "w",
-                                                            d: () => "d",
-                                                            h: () => "h",
-                                                            m: () => "min",
-                                                            s: () => "s",
-                                                            ms: () => "ms",
+                                             :(
+                                                item._claimedBalance == 0 ?
+                                                <b className="text-read red">Not ready</b>
+                                                :
+                                                <b className="text-read red">
+                                                   {
+                                                      HumanizeDuration((elig * duration - (_claimNow - updatedAt)) * 1000, {
+                                                         round: true,
+                                                         units: ["d", "h","m"],
+                                                         language: "shortEn",
+                                                         languages: {
+                                                            shortEn: {
+                                                               y: () => "y",
+                                                               mo: () => "mo",
+                                                               w: () => "w",
+                                                               d: () => "d",
+                                                               h: () => "h",
+                                                               m: () => "min",
+                                                               s: () => "s",
+                                                               ms: () => "ms",
+                                                            },
                                                          },
-                                                      },
-                                                   })
-                                                }
-                                             </b>
+                                                      })
+                                                   }
+                                                </b>
+                                             )
                                           }
                                        </h5>
                                     </td>
@@ -391,52 +396,12 @@ function ListOfStakes(props) {
                                  </div>
                                  <div className="col-sm-12">
                                     <div className="p-2 stake-btn">
-                                       <button type="button" className="table-btn btn py-2 px-4 w-100 mb-3">Claim</button>
+                                       <button
+                                          type="button"
+                                          className="table-btn btn py-2 px-4 w-100 mb-3"
+                                          onClick={Claim}
+                                          >Claim</button>
                                        {/* <div className="claim-btn-failed color5 py-2 px-4 w-100 text-center"><b>Transcation failed</b></div> */}
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </form>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-
-         {/* Modal */}
-
-         <div className="modal fade" id="cancelStake" tabIndex="-1" aria-labelledby="cancelStake" aria-hidden="true">
-            <div className="modal-dialog">
-               <div className="modal-content">
-                  <div className="modal-body popup-card-container rel">
-                     <button type="button" className="closebtn" data-bs-dismiss="modal" aria-label="Close">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
-                        </svg>
-                     </button>
-                     <div className="heading-text-popupm">
-                        <h5 className="my-3 text-center ">Stake Settings</h5>
-                        <form action="">
-                           <div className="input-bal">
-                              <div className="row">
-                                 <div className="mb-4 col-sm-12 d-flex justify-content-between">
-                                    <div><small>Pool reward</small></div>
-                                    <div><small>1.14005 MSDOGE</small></div>
-                                 </div>
-
-                                 <div className="mb-4 col-sm-12 d-flex justify-content-between">
-                                    <div><small>Pool Stake</small></div>
-                                    <div><small>Balance: 1.14005 MSDOGE</small></div>
-                                 </div>
-
-                                 <div className="mb-4 col-sm-12 d-flex justify-content-between">
-                                    <div><small>Penalty Pool reward</small></div>
-                                    <div><small>Balance: 1.14005 MSDOGE</small></div>
-                                 </div>
-                                 <div className="col-sm-12">
-                                    <div className="p-2 stake-btn">
-                                       <button type="button" className="table-btn color5 py-2 px-4 w-100 mb-3">Cancel Stake</button>
                                     </div>
                                  </div>
                               </div>
