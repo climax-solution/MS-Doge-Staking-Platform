@@ -6,8 +6,9 @@ import {connect} from "react-redux";
 import Loading from '../components/Loading';
 import { updateStatus } from "../store/actions/change.action";
 import slogo from "../assets/images/icons/logo.png";
+import config from "../config.json";
 
-const StakingAddress = "0x427E5c6Cca3C918CD3CD7C2744aD130F5D11449b";
+const {StakingAddress} = config;
 
 const duration = 24 * 25 * 3600 ;
 
@@ -142,8 +143,8 @@ function AccountBalance(props) {
                const dogeAmount = web3.utils.toWei(_stakingAmount.toString(), "gwei");
                await _MSDOGE.methods.approve(StakingAddress, dogeAmount).send({ from: account });
                NotificationManager.info("Approved1", "Info");
-               await _XMSDOGE.methods.approve(StakingAddress, dogeAmount).send({ from: account })
-               NotificationManager.info("Approved2", "Info");
+               // await _XMSDOGE.methods.approve(StakingAddress, dogeAmount).send({ from: account })
+               // NotificationManager.info("Approved2", "Info");
                await _Staking.methods.stake(activeCoin, dogeAmount, counter).send({ from: account })
                .on('receipt', async(receipt) => {
                   NotificationManager.success("Success", ":)");

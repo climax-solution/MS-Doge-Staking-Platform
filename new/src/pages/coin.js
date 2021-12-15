@@ -15,12 +15,9 @@ import XMSDOGE from "../contracts/XMSDOGE.json";
 import XCRYPTO from "../contracts/XCRYPTO.json";
 import CRYPTOLORIA from "../contracts/CRYPTOLORIA.json";
 import { connect } from 'react-redux';
+import config from "../config.json";
 
-const StakingAddress = "0x427E5c6Cca3C918CD3CD7C2744aD130F5D11449b";
-const DogeAddress = "0x09C80b6F8Cd84fe90f109BB4Cd2331bE53E2f220";
-const LoriaAddress = "0xeA58d5AFddDb7d591aB4783AD07706816e4164Df";
-const DogeRewardAddress = "0x803bB0c959f4D4c7A588e63914A9E91B971F5862";
-const LoriaRewardAddress = "0x9B765A7B677B4E651da19593A8d5274beBdcE47f";
+const {StakingAddress,DogeAddress,LoriaAddress,DogeRewardAddress,LoriaRewardAddress } = config;
 
 function Coin(props) {
 

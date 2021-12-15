@@ -10,8 +10,9 @@ import fortmatic from "../assets/images/icons/fortmatic-icon.svg";
 import wallet from "../assets/images/icons/wallet-icon.svg";
 import logo from '../assets/images/favicon.png';
 import { connect } from 'react-redux';
+import config from "../config.json";
 
-const StakingAddress = "0x427E5c6Cca3C918CD3CD7C2744aD130F5D11449b";
+const {StakingAddress} = config;
 
 function ListOfStakes(props) {
    const { account, activate } = useWeb3React();
@@ -19,7 +20,6 @@ function ListOfStakes(props) {
    const {
       web3,
       stake: _Staking,
-      balance,
       coin: _MSDOGE,
       reward: _XMSDOGE, 
       loriaCoin: _CRYPTOCOIN,
@@ -223,32 +223,6 @@ function ListOfStakes(props) {
                               )
                            })
                         }
-                        
-                        {/* <tr className="m-0 mt-1">
-                           <td className="p-2">
-                              <h5><b>09/10/2021</b></h5>
-                           </td>
-                           <td className="p-2">
-                              <h5><b>1.0 </b> MsDoge</h5>
-                           </td>
-                           <td className="p-2">
-                              <h5><b>0.5%</b> <br /><b>0.5%</b></h5>
-                           </td>
-                           <td className="p-2">
-                              <h5>10 MSDOGE <br /> 10 CRYPTO</h5>
-                           </td>
-                           <td className="p-2">
-                              <h5><b className="text-read green">Ready to claim</b></h5>
-                           </td>
-                           <td className="p-2 stake-btn"> <button data-bs-toggle="modal" data-bs-target="#claimCoinPopup" type="button" className="table-btn btn py-2 px-4">Claim</button></td>
-                           <td className="p-2">
-                              <a className="dots text-read" data-bs-toggle="modal" data-bs-target="#cancelStake">
-                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                                 </svg>
-                              </a>
-                           </td>
-                        </tr> */}
                         {
                            !_stakedList.length &&
                               <tr className="empty-row pt-3 pb-3 mt-1">
