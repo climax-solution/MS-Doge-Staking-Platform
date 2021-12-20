@@ -34,7 +34,7 @@ function Coin(props) {
 
     const [stakeBalance, setStakeBalance] = useState(false)
 
-    //data-bs-toggle="modal" data-bs-target="#exampleModal"
+    //data-bs-toggle="modal" data-bs-target="#stakingModal"
     useEffect(async() => {
         const web3 = await getWeb3();
         const Staking = new web3.eth.Contract(STAKING, StakingAddress);

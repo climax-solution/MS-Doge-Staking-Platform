@@ -70,7 +70,7 @@ export default function coinBill() {
                                     </div>
                                     <div className="">
                                         <div className="stake-btn">
-                                            <a className="btn color-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">Stake</a>
+                                            <a className="btn color-dark" data-bs-toggle="modal" data-bs-target="#stakingModal">Stake</a>
                                         </div>
                                     </div>
                                 </div>

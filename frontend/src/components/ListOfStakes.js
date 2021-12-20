@@ -41,7 +41,7 @@ export default function ListOfStakes(props) {
    const [activeIdx, setActiveIdx] = useState(-1);
    const [modalAttr, setModalAttr] = useState({
       "data-bs-toggle": "modal",
-      "data-bs-target": "#exampleModal"
+      "data-bs-target": "#stakingModal"
    })
 
    useEffect(async() => {
@@ -379,7 +379,7 @@ export default function ListOfStakes(props) {
             </div>
          </div>
          {/* Modal */}
-         <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div className="modal fade" id="stakingModal" tabIndex="-1" aria-labelledby="stakingModalLabel" aria-hidden="true">
             <div className="modal-dialog">
                <div className="modal-content icon-text-block-cri">
                   <div className="modal-body popup-card-container rel">

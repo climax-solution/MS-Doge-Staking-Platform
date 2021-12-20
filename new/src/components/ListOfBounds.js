@@ -488,7 +488,7 @@ export default function ListOfBounds() {
             </div>
          </div>
          {/* Modal */}
-         <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div className="modal fade" id="stakingModal" tabIndex="-1" aria-labelledby="stakingModalLabel" aria-hidden="true">
             <div className="modal-dialog">
                <div className="modal-content icon-text-block-cri">
                   <div className="modal-body popup-card-container rel">

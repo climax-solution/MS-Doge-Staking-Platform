@@ -32,7 +32,7 @@ function ListOfStakes(props) {
    const [activeIdx, setActiveIdx] = useState(-1);
    const [modalAttr, setModalAttr] = useState({
       "data-bs-toggle": "modal",
-      "data-bs-target": "#exampleModal"
+      "data-bs-target": "#stakingModal"
    })
 
    useEffect(async() => {
@@ -45,7 +45,8 @@ function ListOfStakes(props) {
 
    const connectMetamask = () => {
       try {
-         activate(injected)
+         activate(injected);
+         window.$('#connectWallet').modal('hide');
        } catch (ex) {
          console.log(ex);
        }
