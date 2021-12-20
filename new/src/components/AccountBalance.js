@@ -75,7 +75,7 @@ function AccountBalance(props) {
             .on('receipt', async(res) => {
                await props.updateStatus();
                await getStakedList();
-               NotificationManager.success(":D")
+               NotificationManager.success(":D");
                setLoading(false);
             })
          }
@@ -88,6 +88,7 @@ function AccountBalance(props) {
       } catch (err) {
          setLoading(false);
       }
+      window.$('#cancelStake').modal('hide');
    }
 
    const multipleClaim = async() => {
@@ -127,7 +128,7 @@ function AccountBalance(props) {
       } catch (err) {
          setLoading(false);
       }
-
+      window.$('#multiClaimCoinPopup').modal('hide');
       setLoading(false);
    }
    
@@ -142,9 +143,7 @@ function AccountBalance(props) {
             case 0:
                const dogeAmount = web3.utils.toWei(_stakingAmount.toString(), "gwei");
                await _MSDOGE.methods.approve(StakingAddress, dogeAmount).send({ from: account });
-               NotificationManager.info("Approved1", "Info");
-               // await _XMSDOGE.methods.approve(StakingAddress, dogeAmount).send({ from: account })
-               // NotificationManager.info("Approved2", "Info");
+               NotificationManager.info("Approved", "Info");
                await _Staking.methods.stake(activeCoin, dogeAmount, counter).send({ from: account })
                .on('receipt', async(receipt) => {
                   NotificationManager.success("Success", ":)");
@@ -156,9 +155,7 @@ function AccountBalance(props) {
             case 1:
                const loriaAmount = web3.utils.toWei(_stakingAmount.toString(), "mwei");
                await _CRYPTO.methods.approve(StakingAddress, loriaAmount).send({ from: account });
-               NotificationManager.info("Approved1", "Info");
-               await _XCRYPTO.methods.approve(StakingAddress, loriaAmount).send({ from: account })
-               NotificationManager.info("Approved2", "Info");
+               NotificationManager.info("Approved", "Info");
                await _Staking.methods.stake(activeCoin, loriaAmount, counter).send({ from: account })
                .on('receipt', async(receipt) => {
                   NotificationManager.success("Success", ":)");
@@ -171,6 +168,7 @@ function AccountBalance(props) {
       } catch(err) {
          setLoading(false);
       }
+      window.$("#stakingModal").modal('hide');
    }
 
    const getStakedList = async() => {
@@ -252,11 +250,11 @@ function AccountBalance(props) {
                   <div className="col-6 py-3 text-center">
                      <button
                         type="button"
-                        className="withdraw-btn mx-auto py-3 px-5"
+                        className={`withdraw-btn mx-auto py-3 px-5 ${active && "active"}`}
                         {
                            ...(
                               active && {
-                                 "data-bs-target" : "#exampleModal",
+                                 "data-bs-target" : "#stakingModal",
                                  "data-bs-toggle" : "modal"
                               }
                            )
@@ -303,7 +301,7 @@ function AccountBalance(props) {
             </div>
          </div>
          {/* Modal */}
-         <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div className="modal fade" id="stakingModal" tabIndex="-1" aria-labelledby="stakingModalLabel" aria-hidden="true">
             <div className="modal-dialog">
                <div className="modal-content icon-text-block-cri">
                   <div className="modal-body popup-card-container rel">

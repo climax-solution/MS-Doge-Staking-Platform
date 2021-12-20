@@ -154,6 +154,19 @@
   },
   {
     "inputs": [],
+    "name": "DogePenalty",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "LoriaAPY",
     "outputs": [
       {
@@ -168,6 +181,19 @@
   {
     "inputs": [],
     "name": "LoriaElig",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "LoriaPenalty",
     "outputs": [
       {
         "internalType": "uint256",
@@ -233,58 +259,6 @@
   },
   {
     "inputs": [],
-    "name": "getDogeAPY",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "reward",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getDogeElig",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getLoriaAPY",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "reward",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getLoriaElig",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "getNow",
     "outputs": [
       {
@@ -325,6 +299,11 @@
           {
             "internalType": "uint256",
             "name": "_eligibility",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_penalty",
             "type": "uint256"
           },
           {
@@ -451,6 +430,19 @@
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "penalty",
+        "type": "uint256"
+      }
+    ],
+    "name": "setDogePenalty",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "_apy",
         "type": "uint256"
       }
@@ -469,6 +461,19 @@
       }
     ],
     "name": "setLoriaElig",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "penalty",
+        "type": "uint256"
+      }
+    ],
+    "name": "setLoriaPenalty",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
