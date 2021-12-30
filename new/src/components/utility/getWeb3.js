@@ -13,9 +13,7 @@ const getWeb3 = () => {
     }
     // Fallback to localhost; use dev console port by default...
     else {
-        const provider = new Web3.providers.HttpProvider(
-            FALLBACK_WEB3_PROVIDER
-        );
+        const provider = new Web3.providers.HttpProvider("");
         web3 = new Web3(provider);
     }
 

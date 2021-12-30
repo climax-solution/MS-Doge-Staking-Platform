@@ -1,6 +1,6 @@
 import React from 'react'
 
-const index = () => {
+const TotalMarketInfoStake = () => {
     return (
         <div className="col-sm-12 mb-4 new-data">
             <div className="row">
@@ -72,32 +72,18 @@ const index = () => {
                     <div className="gray-bg p-3 d-flex justify-content-between bg-card-right">
                         <div>
                             <div className="mb-3">
-                                <p>Backing per MsDoge</p>
+                                <p>MsDoge Staked</p>
                                 <div className="d-flex">
-                                    <h5><b>$852.81</b></h5>
+                                    <h5><b>10.5<sub style={{ bottom: "0" }}>M</sub></b> </h5>
+                                    <small style={{ marginLeft: "25px" }}>12.55% USD</small>
                                 </div>
                             </div>
 
                             <div>
-                                <p>Backing per MsDoge</p>
+                                <p>Crypto Staked</p>
                                 <div className="d-flex">
-                                    <h5><b>$1.18</b></h5>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <div className="mb-3">
-                                <p>MsDoge Index</p>
-                                <div className="d-flex">
-                                    <h5><b>25.5<sub style={{ bottom: "0" }}>M</sub></b> </h5>
-                                </div>
-                            </div>
-
-                            <div>
-                                <p>Crypto Index</p>
-                                <div className="d-flex">
-                                    <h5><b>36.84 sOHM</b></h5>
+                                    <h5><b>10.5<sub style={{ bottom: "0" }}>M</sub></b> </h5>
+                                    <small style={{ marginLeft: "25px" }}>12.55% USD</small>
                                 </div>
                             </div>
                         </div>
@@ -109,4 +95,4 @@ const index = () => {
     )
 }
 
-export default index
+export default TotalMarketInfoStake

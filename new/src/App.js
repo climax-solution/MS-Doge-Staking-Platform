@@ -11,6 +11,7 @@ import {
 import { NotificationContainer } from "react-notifications";
 import 'react-notifications/lib/notifications.css';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Data from "./pages/data";
 
 // import styled, {ThemeProvider} from 'styled-components';
 // import {lightTheme, darkTheme, GlobalStyles} from './theme';
@@ -36,6 +37,7 @@ function App() {
         <Switch>
           <Route path="/" component={Coin} exact />
           <Route path="/coin-bill" component={CoinBill} exact />
+          <Route path="/data" component={Data} exact />
         </Switch>
       </Router>
       {/* </StyledApp> */}

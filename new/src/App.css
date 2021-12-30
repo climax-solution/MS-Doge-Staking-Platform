@@ -70,7 +70,7 @@
 body {
   margin: 0;
   padding: 0;
-  background: #fcfcfc;
+  background: #FCFCFC;
   overflow-x: hidden;
 }
 .App .container-lg {
@@ -977,16 +977,6 @@ header .navbar {
   background: #b8b8b8;
   /* color: var(--black); */
 }
-
-.withdraw-btn.active {
-  background-color: var(--primary);
-  color: white;
-}
-
-.withdraw-btn.active:hover {
-  background-color: #d3b217;
-}
-
 .heading-text-stake h2 {
   font-size: 24px;
   /* color: var(--black); */
@@ -1001,22 +991,36 @@ header .navbar {
 .stake-btn .btn {
   background: var(--primary);
   font-size: 14px;
-  color: var(--black);
   font-family: var(--amitSemi);
-  padding: 15px 40px 11px 40px;
+  width: 150px;
+  height: 48px;
+  padding: 15px 40px;
   border-radius: 6px;
-  margin-right: 10px;
+  display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.heading-text-stake{
+  flex: 1;
+}
+
+.stake-bonds-outline-container{
+  flex: 2;
 }
 
 .stake-btn-outline .btn{
+  width: 150px;
+  height: 48px;
   background: transparent;
   border: solid 2px var(--primary);
   font-size: 14px;
-  color: var(--primary);
+  color: var(--black);
   font-family: var(--amitSemi);
-  padding: 15px 40px 11px 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 6px;
-  margin-right: 10px;
 }
 
 .stake-list-sel select {
@@ -1043,12 +1047,24 @@ select::-ms-expand {
   display: none;
 }
 
+.table-btn.color5{
+  color: #fff;
+}
+
 .closebtn {
   background: none;
   border: none;
   width: 30px;
   height: 30px;
+  position: absolute;
+  top: 15px;
 }
+
+.popup-card-container header{
+  background: transparent !important;
+  padding: 0 15px !important;
+}
+
 .heading-text-popup h5 {
   font-size: 14px;
   font-family: var(--amitSemi);
@@ -1067,7 +1083,7 @@ select::-ms-expand {
 .input-bal .input-box {
 	border: none;
 	color: #898989;
-	font-size: 12px;
+	font-size: 15px;
 	padding: 6px;
 	width: 100%;
 	background: #EDECEC;
@@ -1198,12 +1214,20 @@ select::-ms-expand {
 .table-btn {
 	background: #cdcdcd;
 	border: none;
-	border-radius: 10px;
 	color: var(--black);
-	padding: 12px 24px 10px 24px !important;
 	font-family: var(--amitSemi);
+    font-size: 14px;
+    width: 104px;
+    height: 48px;
+    padding: 15px 40px;
+    border-radius: 6px;
 }
-.stake-list-sel tr + tr {
+
+.stake-list-sel thead tr{
+  border: none !important;
+}
+
+.stake-list-sel tr{
   border: 1px solid #dee2e6;
 }
 /***white theme***/
@@ -1282,7 +1306,7 @@ table.stake-list-sel.fliter-box tr {
   border: 1px solid #dee2e6;
 }
 table.stake-list-sel.fliter-box td {
-	width: 135px;
+	width: 120px;
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
@@ -1292,26 +1316,26 @@ table.stake-list-sel.fliter-box > tr:first-child {
 	border: none;
 }
 table.stake-list-sel.fliter-box td:nth-child(2) {
-	width: 160px;
+	width: 135px;
 }
 table.stake-list-sel.fliter-box td:nth-child(3) {
-	width: 100px;
+	width: 145px;
 }
 table.stake-list-sel.fliter-box td:nth-child(4) {
-	width: 170px;
-}
-table.stake-list-sel.fliter-box td:nth-last-child(2) {
-	width: 110px;
+	width: 155px;
 }
 table.stake-list-sel.fliter-box td:last-child {
-	width: 40px;
+	width: 50px;
 }
 
 .modal.fade div.modal-dialog {
 	max-width: 340px;
-	top: 50%;
-	transform: translateY(-50%);
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    position: absolute;
 }
+
 .heading-text-popupm h5 {
 	margin-top: 9px !important;
 	font-family: var(--amitSemi);
@@ -1786,7 +1810,7 @@ div.acc-heading-text h2 > span {
     overflow: visible;
   }
   .new-data p {
-    font-size: 14px;
+    font-size: 12px;
   }
   .new-data h5{
     font-size: 18px;
@@ -1847,6 +1871,13 @@ div.acc-heading-text h2 > span {
   cursor: pointer;
 }
 
+.stake-list-sel select{
+  background: none !important;
+}
+
+.fa-sort-down:before{
+  content: '' !important;
+}
 
 .admin-dashboard-bg{
   padding: 100px 0;
@@ -1964,7 +1995,21 @@ div.acc-heading-text h2 > span {
   align-items: center;
 }
 
+.migrateTransactionPopupContent{
+  width: 385px;
+}
+
+.migrateTransactionClose{
+  font-size: 28px;
+  color: #F6CE0E;
+}
+
 @media only screen and (max-width: 768px){
+
+  .migrateTransactionPopupContent{
+    width: 100%;
+  }
+
   .admin-dash_container{
     padding: 50px 0 !important;
   }
@@ -1986,25 +2031,42 @@ div.acc-heading-text h2 > span {
   color: #F6CE0E;
 }
 
+#msDogeApprove b.text-gold{
+  font-size: 20px !important;
+}
+
+#msDogeApprove h6{
+  font-size: 16px !important;
+}
+
 .boundTabs_container{
-  padding: 10px;
+  padding: 8px;
   border: solid 1px #CDCDCD !important;
-  border-radius: 12px;
+  border-radius: 5px;
   width: 100%;
+  height: 53px;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
 }
 
 .boundTabs_container button{
-  width: 50%;
-  border-radius: 12px;
+  border-radius: 5px;
   background: #fff;
   padding: 10px;
   border: none;
+  width: 127px;
+  height: 36px;
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  box-sizing: border-box;
 }
 
 
 .boundTabs_container button.active{
   background: var(--bs-gray-900);
-  color: var(--white);
+  color: #fff;
 }
 
 @media only screen and (max-width: 768px){
@@ -2047,6 +2109,143 @@ div.acc-heading-text h2 > span {
   align-items: center;
 }
 
-.dd-header > span {
+.small-logo-photo .dd-header > span {
   display: none !important;
+}
+
+.dd-header-title{
+  margin-right: -10px !important;
+}
+
+.crypto-select-icon .dd-header svg{
+  transform: scale(.7);
+}
+
+.line-graph{
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 40px 30px;
+  margin-bottom: 40px;
+  filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.03));
+}
+
+
+
+.line-graph-a{
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 40px 30px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0));
+}
+
+.line-graph-a h4{
+  color: #F6CE0E;
+  margin-bottom: 10px;
+}
+
+.select-coin option:before {
+  content: "12";
+}
+
+.dd-header-title  span {
+  align-items: center;
+}
+
+.dd-header > span {
+  display: none;
+}
+
+.line-graph-gutter{
+  border-radius: 12px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.03)) !important;
+}
+
+@media only screen and (max-width: 768px){
+
+  .modal-dialog{
+    margin: auto !important;
+  }
+
+  .modal.fade div.modal-dialog{
+    width: 340px !important;
+  }
+
+  .stake-bonds-outline-container .btn{
+    margin: 0 !important;
+  }
+
+  .msDogeStaking-container, .stake-bonds-outline-container{
+    justify-content: space-between !important;
+  }
+
+  .line-graph-a{
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.03)) !important;
+  margin-bottom: 20px;
+  }
+
+  .line-graph-gutter{
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0)) !important;
+  }
+
+  .msDogeStaking-container{
+    flex-direction: column !important;
+  }
+
+  .heading-text-stake{
+    margin-bottom: 15px !important;
+  }
+
+  .msDogeStaking-container .stake-btn-outline .btn,
+  .msDogeStaking-container .stake-btn .btn{
+    width: auto !important;
+    padding: 15px 20px 15px 20px !important;
+  }
+
+}
+
+.ml-1{
+  margin-left: 1px !important;
+}
+
+.ml-2{
+  margin-left: 6px !important;
+}
+
+.list-stake table tr td small b{
+  font-size: 11px;
+}
+
+.new-data .gray-bg p{
+  font-size: 14px;
+}
+
+.header-coin-title .new-data .gray-bg h5 b{
+  font-size: 18px;
+}
+
+.header-coin-title small{
+  font-size: 10px;
+}
+
+.header-coin-title .new-data p{
+  font-size: 14px;
+}
+
+.msDogeStaking-container, .stake-bonds-outline-container{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.stake-bonds-outline-container .btn{
+  margin: 0 0 0 21px;
+}
+
+.modal .modal-content{
+  width: 340px;
+}
+
+@media only screen and (max-width: 768px){
+  .modal .modal-content{
+    width: 100% !important;
+  }
 }

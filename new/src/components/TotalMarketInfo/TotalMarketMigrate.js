@@ -22,43 +22,35 @@ const index = () => {
                     <div className="gray-bg p-3 d-flex justify-content-between bg-card-center">
                         <div>
                             <div className="mb-3">
-                                <p>MsDoge Price</p>
-                                <h5><b>$1.18</b></h5>
-                            </div>
-
-                            <div>
-                                <p>Crypto Price</p>
-                                <h5><b>$1.18</b></h5>
-                            </div>
-                        </div>
-
-
-                        <div>
-                            <div className="mb-3">
-                                <p>MsDoge Market cap</p>
+                                <p>MsDoge cap</p>
                                 <div className="d-flex">
                                     <h5><b>$10.5<sub style={{ bottom: "0" }}>M</sub></b> </h5>
                                 </div>
                             </div>
 
                             <div>
-                                <p>Crypto Market cap</p>
-                                <h5><b>$10.5<sub style={{ bottom: "0" }}>M</sub></b> </h5>
+                                <p>MsDoge Price</p>
+                                <div className="d-flex">
+                                    <h5><b>$10.5<sub style={{ bottom: "0" }}>M</sub></b> </h5>
+                                </div>
                             </div>
                         </div>
 
 
                         <div>
                             <div className="mb-3">
-                                <p>MsDoge Circulating supply</p>
+                                <p>MsDoge Staked</p>
                                 <div className="d-flex">
-                                    <h5><b>25.5<sub style={{ bottom: "0" }}>M</sub></b> </h5>
-                                    <small style={{ marginLeft: "25px" }}>40.5% LOCKED</small>
+                                    <h5><b>10.5<sub style={{ bottom: "0" }}>M</sub></b> </h5>
+                                    <small style={{ marginLeft: "25px" }}>$ 12.45M USD</small>
                                 </div>
                             </div>
+                        </div>
 
-                            <div>
-                                <p>Crypto Circulating supply</p>
+
+                        <div>
+                            <div className="mb-3">
+                                <p>Circulating supply</p>
                                 <div className="d-flex">
                                     <h5><b>25.5<sub style={{ bottom: "0" }}>M</sub></b> </h5>
                                     <small style={{ marginLeft: "25px" }}>40.5% LOCKED</small>
@@ -72,14 +64,14 @@ const index = () => {
                     <div className="gray-bg p-3 d-flex justify-content-between bg-card-right">
                         <div>
                             <div className="mb-3">
-                                <p>Backing per MsDoge</p>
+                                <p>Market cap</p>
                                 <div className="d-flex">
-                                    <h5><b>$852.81</b></h5>
+                                    <h5><b>$10.5<sub style={{ bottom: "0" }}>M</sub></b> </h5>
                                 </div>
                             </div>
 
                             <div>
-                                <p>Backing per MsDoge</p>
+                                <p>Loria Price</p>
                                 <div className="d-flex">
                                     <h5><b>$1.18</b></h5>
                                 </div>
@@ -88,16 +80,10 @@ const index = () => {
 
                         <div>
                             <div className="mb-3">
-                                <p>MsDoge Index</p>
+                                <p>Circulating supply</p>
                                 <div className="d-flex">
-                                    <h5><b>25.5<sub style={{ bottom: "0" }}>M</sub></b> </h5>
-                                </div>
-                            </div>
-
-                            <div>
-                                <p>Crypto Index</p>
-                                <div className="d-flex">
-                                    <h5><b>36.84 sOHM</b></h5>
+                                    <h5><b>$25.5<sub style={{ bottom: "0" }}>M</sub></b> </h5>
+                                    <small style={{ marginLeft: "25px" }}>40.5% LOCKED</small>
                                 </div>
                             </div>
                         </div>

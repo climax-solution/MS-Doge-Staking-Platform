@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import './style.css';
 
 const FormSelect = ({ defaultValue,openValue,title,options, ...attrs }) => {
@@ -9,18 +9,14 @@ const FormSelect = ({ defaultValue,openValue,title,options, ...attrs }) => {
 	const toggleDropdown = () => setOpen(!isOpen);
 	
 	const handleItemClick = (value) => {
-		//console.log(value);
-		//console.log(selectedItem);
 		selectedItem == value ? setSelectedItem(value) : setSelectedItem(value);
 		toggleDropdown();
 	}
-	
-	// let OpenClass = () => {
-	// 	if(  )
-	// }
 
 	return (
-		<div className="form-field" onClick={() => toggleDropdown() }>
+		<>
+		<div className="position-fixed" style={{width: "100%", height: "100vh", left: "0", top: "0", background: "none", display: isOpen === true ? 'block' : "none"}} onClick={() => setOpen(false)}></div>
+		<div className="form-field m-0" onClick={() => toggleDropdown() }>
 			<label>
  				{title}
  			</label>
@@ -44,12 +40,8 @@ const FormSelect = ({ defaultValue,openValue,title,options, ...attrs }) => {
 				</div>
 			</div>
 		</div>
-	  
+	  </>
 	);
-  };
-  
-  FormSelect.propTypes = {
-	
   };
   
   export default FormSelect;

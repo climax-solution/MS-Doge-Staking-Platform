@@ -11,7 +11,7 @@ export default function coinBill() {
             <div className="coin-main py-60 ms">
                 <div className="container-lg">
                     <div className="row">
-                    <TotalMarketInfo />
+                        <TotalMarketInfo />
                         <div className="col-md-5 col-lg-4">
                             <div className="gray-bg ms p-4 mb-4 mb-md-0">
                                 <div className="acc-heading-text">
@@ -20,7 +20,7 @@ export default function coinBill() {
                                         <h2 className="color-primary">1.14005 </h2>
                                         <div style={{ marginLeft: "15px" }}>MSDOGE</div>
                                     </div>
-                                    <h4 className="mb-2 mt-2 color-primary">0.0448859 <span>LORIA</span></h4>
+                                    <h4 className="mb-2 mt-2 color-primary">0.0448859 <span>CRYPTO</span></h4>
                                     <h5 className="mb-3">0.0448859  <span>ETH</span></h5>
                                 </div>
                                 <div className="withdraw-text mb-2">
@@ -70,7 +70,7 @@ export default function coinBill() {
                                     </div>
                                     <div className="">
                                         <div className="stake-btn">
-                                            <a className="btn color-dark" data-bs-toggle="modal" data-bs-target="#stakingModal">Stake</a>
+                                            <a className="btn color-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">Stake</a>
                                         </div>
                                     </div>
                                 </div>
@@ -79,39 +79,24 @@ export default function coinBill() {
                                         <table className="stake-list-sel fliter-box w-100 my-4 d-none d-md-block">
                                             <tr>
                                                 <td className="p-2">
-                                                    <select>
-                                                        <option>Start date</option>
-                                                        <option>Start date</option>
-                                                        <option>Start date</option>
-                                                    </select>
+                                                    <small><b>Start date</b></small>
+                                                    <i className="fas fa-sort-down ml-2"></i>
                                                 </td>
                                                 <td className="p-2">
-                                                    <select>
-                                                        <option>Amount of stake</option>
-                                                        <option>Amount of stake</option>
-                                                        <option>Amount of stake</option>
-                                                    </select>
+                                                    <small><b>Amount of stake</b></small>
+                                                    <i className="fas fa-sort-down ml-2"></i>
                                                 </td>
                                                 <td className="p-2">
-                                                    <select>
-                                                        <option>APY</option>
-                                                        <option>APY</option>
-                                                        <option>APY</option>
-                                                    </select>
+                                                    <small><b>APY</b></small>
+                                                    <i className="fas fa-sort-down ml-2"></i>
                                                 </td>
                                                 <td className="p-2">
-                                                    <select>
-                                                        <option>Amount of reward</option>
-                                                        <option>Amount of reward</option>
-                                                        <option>Amount of reward</option>
-                                                    </select>
+                                                    <small><b>Amount of reward</b></small>
+                                                    <i className="fas fa-sort-down ml-2"></i>
                                                 </td>
                                                 <td className="p-2">
-                                                    <select>
-                                                        <option>Remaining time</option>
-                                                        <option>Remaining time</option>
-                                                        <option>Remaining time</option>
-                                                    </select>
+                                                    <small><b>Remaining time</b></small>
+                                                    <i className="fas fa-sort-down ml-2"></i>
                                                 </td>
                                                 <td className="p-2"></td>
                                                 <td className="p-2"></td>
@@ -119,43 +104,23 @@ export default function coinBill() {
                                         </table>
                                         <ul className="stake-list-sel fliter-box d-flex flex-wrap my-4 ls p-0 d-block d-md-none">
                                             <li className="col mb-3 mb-md-0 me-3">
-                                                <select>
-                                                    <option>Start date</option>
-                                                    <option>Start date</option>
-                                                    <option>Start date</option>
-                                                </select>
+                                                <small><b>Start date</b></small>
                                                 <h5 className="mt-3"><b>09/10/2021</b></h5>
                                             </li>
                                             <li className="col mb-3 mb-md-0 me-3 text-center">
-                                                <select>
-                                                    <option>Amount of stake</option>
-                                                    <option>Amount of stake</option>
-                                                    <option>Amount of stake</option>
-                                                </select>
+                                                <small><b>Amount of stake</b></small>
                                                 <h5 className="mt-3"><b>1.0 </b> MsDoge</h5>
                                             </li>
                                             <li className="col mb-3 mb-md-0 me-3 text-center">
-                                                <select>
-                                                    <option>APY</option>
-                                                    <option>APY</option>
-                                                    <option>APY</option>
-                                                </select>
+                                                <small><b>APY</b></small>
                                                 <h5 className="mt-3"><b>0.5%</b></h5>
                                             </li>
                                             <li className="col mb-3 mb-md-0 me-3 text-center">
-                                                <select>
-                                                    <option>Amount of reward</option>
-                                                    <option>Amount of reward</option>
-                                                    <option>Amount of reward</option>
-                                                </select>
+                                                <small><b>Amount of reward</b></small>
                                                 <h5 className="mt-3">MsDoge</h5>
                                             </li>
                                             <li className="col mb-3 mb-md-0 me-3 text-center">
-                                                <select>
-                                                    <option>Remaining time</option>
-                                                    <option>Remaining time</option>
-                                                    <option>Remaining time</option>
-                                                </select>
+                                                <small><b>Remaining time</b></small>
                                                 <h5 className="mt-3"><b className="text-read red">30d 10:28</b></h5>
                                             </li>
                                             <li>

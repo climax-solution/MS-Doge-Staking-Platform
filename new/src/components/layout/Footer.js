@@ -21,7 +21,7 @@ export default function Footer() {
         {value: '2' , label: 'French', img: FR, },
         {value: '3' , label: 'German', img: DE, },
         {value: '4' , label: 'Spanish', img: ES, },
-        {value: '5' , label: 'italian', img: IT, },
+        {value: '5' , label: 'Italian', img: IT, },
         {value: '6' , label: 'Russian', img: RU, },
         {value: '7' , label: 'Chinese', img: CN, },
         {value: '8' , label: 'Korean', img: KR, },
@@ -50,7 +50,7 @@ export default function Footer() {
                             <div className="col-md-8 col-lg-8">
                                 <div className="mx-auto d-table text-center">
                                 <ul className="ft-nav d-flex p-0 ls">
-                                    <li>@2021 Eden Smart Chain</li>
+                                    <li>@2021 Paradis Smart Chain</li>
                                     <li><a href="#">Privacy Policy</a></li>
                                     <li><a href="#">Terms of Service</a></li>
                                 </ul>
@@ -74,7 +74,7 @@ export default function Footer() {
                             <img src={ftlogo} alt="Logo" /> <span>MsDoge</span>
                             </a>
                             <ul className="ft-nav d-flex p-0 ls mx-auto">
-                                    <li>@2021 Eden Smart Chain</li>
+                                    <li>@2021 Paradis Smart Chain</li>
                                 </ul>
                             </div>
                             <div className="last-sel py-4">

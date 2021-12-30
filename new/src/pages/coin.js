@@ -6,6 +6,7 @@ import Footer from '../components/layout/Footer';
 import Navbar from "../components/layout/Navbar";
 import ListOfStakes from '../components/ListOfStakes';
 import ListOfBounds from '../components/ListOfBounds';
+import ListOfMigrate from '../components/ListOfMigrate';
 import TotalMarketInfo from '../components/TotalMarketInfo/index';
 
 import getWeb3 from '../components/utility/getWeb3.js';
@@ -16,8 +17,11 @@ import XCRYPTO from "../contracts/XCRYPTO.json";
 import CRYPTOLORIA from "../contracts/CRYPTOLORIA.json";
 import { connect } from 'react-redux';
 import config from "../config.json";
+import AccountBalanceMigrate from '../components/AccountBalanceMigrate';
+import TotalMarketInfoStake from '../components/TotalMarketInfo/TotalMarketInfoStake';
+import TotalMarketMigrate from '../components/TotalMarketInfo/TotalMarketMigrate';
 
-const {StakingAddress,DogeAddress,LoriaAddress,DogeRewardAddress,LoriaRewardAddress } = config;
+const { StakingAddress, DogeAddress, LoriaAddress, DogeRewardAddress, LoriaRewardAddress } = config;
 
 function Coin(props) {
 
@@ -32,10 +36,10 @@ function Coin(props) {
     const [_loriaBalance, setLoriaBalance] = useState('---');
     const [_ethBalance, setETHBalance] = useState("---");
 
-    const [stakeBalance, setStakeBalance] = useState(false)
+    const [stakeBalance, setStakeBalance] = useState("stake")
 
-    //data-bs-toggle="modal" data-bs-target="#stakingModal"
-    useEffect(async() => {
+    //data-bs-toggle="modal" data-bs-target="#exampleModal"
+    useEffect(async () => {
         const web3 = await getWeb3();
         const Staking = new web3.eth.Contract(STAKING, StakingAddress);
         const Doge = new web3.eth.Contract(MSDOGE, DogeAddress);
@@ -50,10 +54,10 @@ function Coin(props) {
         setDogeReward(dogeReward);
         setLoriaReward(loriaReward);
 
-    },[])
+    }, [])
 
     useEffect(async (preprops) => {
-      
+
         if (account || account && preprops != props) {
             let doge = await _DogeCoin.methods.balanceOf(account).call();
             let loria = await _LoriaCoin.methods.balanceOf(account).call();
@@ -70,8 +74,8 @@ function Coin(props) {
             setDogeBalance("---");
             setLoriaBalance("---");
         }
-  
-     },[account, props]);
+
+    }, [account, props]);
     return (
         <>
             <Navbar />
@@ -79,63 +83,135 @@ function Coin(props) {
                 <div className="container-lg">
                     <div className="row">
                         <div className="col-md-12">
-                            <TotalMarketInfo />
+                            <div className="header-coin-title">
+                                {
+                                    stakeBalance === "stake" ?
+                                        <TotalMarketInfoStake />
+                                        :
+                                        stakeBalance === "bonding"
+
+                                            ?
+
+                                            <TotalMarketInfo />
+
+                                            :
+
+                                            <TotalMarketMigrate />
+                                }
+                            </div>
                         </div>
                         <div className="col-md-5 col-lg-4">
 
                             {
-                                stakeBalance === false ?
-                                <AccountBalanceStake
-                                    web3={_web3}
-                                    dogeCoin={_DogeCoin}
-                                    loriaCoin={_LoriaCoin}
-                                    dogeReward={_DogeReward}
-                                    loriaReward={_LoriaReward}
-                                    dogeB={_dogeBalance}
-                                    loriaB={_loriaBalance}
-                                    ethB={_ethBalance}
-                                    stake={_Stake}
-                                />
-                                :
-                                <AcountBalanceBonds
-                                
-                                />
+                                stakeBalance === "stake" ?
+                                    <AccountBalanceStake
+                                        web3={_web3}
+                                        dogeCoin={_DogeCoin}
+                                        loriaCoin={_LoriaCoin}
+                                        dogeReward={_DogeReward}
+                                        loriaReward={_LoriaReward}
+                                        dogeB={_dogeBalance}
+                                        loriaB={_loriaBalance}
+                                        ethB={_ethBalance}
+                                        stake={_Stake}
+                                    />
+                                    :
+                                    stakeBalance === "bonding"
+
+                                        ?
+
+                                        <AcountBalanceBonds />
+
+                                        :
+
+                                        <AccountBalanceMigrate />
                             }
 
                         </div>
-                        <div className="col-md-7 col-lg-8">
-                            <div className="d-flex justify-content-between">
+                        <div className="col-md-7 col-lg-8" style={{padding: "0 0 0 calc(var(--bs-gutter-x) * .5)"}}>
+                            <div className="msDogeStaking-container">
                                 <div className="heading-text-stake ms">
-                                    <h2>MsDoge Staking</h2>
-                                    <p>List of stakes below</p>
+                                    <h2>
+                                        {
+                                            stakeBalance === "stake" ?
+                                                "MsDoge Staking"
+                                                :
+                                                stakeBalance === "bonding"
+                                                ?
+                                                "MsDoge Bonding"
+                                                :
+                                                "MsDoge Migrate"
+                                        }
+                                    </h2>
+                                    <p>
+                                        {
+                                            stakeBalance === "stake" ?
+                                                "List of stakes below"
+                                                :
+                                                stakeBalance === "bonding"
+                                                ?
+                                                "List of bonds below"
+                                                :
+                                                "List of migrate below"
+                                        }
+
+                                    </p>
                                 </div>
-                                <div className="d-flex">
-                                    <div className={stakeBalance === false ? "stake-btn" : "stake-btn-outline"}> 
-                                        <a className="btn" onClick={() => setStakeBalance(false)}>Stake</a>
+                                <div className="stake-bonds-outline-container">
+                                    <div className={stakeBalance === "stake" ? "stake-btn" : stakeBalance === "bonding" ? "stake-btn-outline" : "stake-btn-outline"}>
+                                        <a className="btn" onClick={() => setStakeBalance("stake")}>Stake</a>
                                     </div>
 
-                                    <div className={stakeBalance === false ? "stake-btn-outline" : "stake-btn"}>
-                                        <a className="btn" onClick={() => setStakeBalance(true)} >Bonds</a>
+                                    <div className={stakeBalance === "bonding" ? "stake-btn" : stakeBalance === "bonding" ? "stake-btn-outline" : "stake-btn-outline"}>
+                                        <a className="btn" onClick={() => setStakeBalance("bonding")} >Bonds</a>
                                     </div>
 
-                                    <div className="stake-btn-outline">
-                                        <a className="btn" data-bs-toggle="modal" data-bs-target="#msDogeApprove">Migrate</a>
+                                    <div data-bs-toggle="modal" data-bs-target="#migrateTransactionPopup" className={stakeBalance === "migrate" ? "stake-btn" : stakeBalance === "bonding" ? "stake-btn-outline" : "stake-btn-outline"}>
+                                        <a className="btn" onClick={() => setStakeBalance("migrate")} >Migrate</a>
                                     </div>
                                 </div>
                             </div>
 
+
                             {
-                                stakeBalance === false ?
+                                stakeBalance === "stake" ?
                                     <ListOfStakes
+                                        web3={_web3}
+                                        dogeCoin={_DogeCoin}
+                                        loriaCoin={_LoriaCoin}
+                                        dogeReward={_DogeReward}
+                                        loriaReward={_LoriaReward}
+                                        dogeB={_dogeBalance}
+                                        loriaB={_loriaBalance}
+                                        ethB={_ethBalance}
+                                        stake={_Stake}
+                                    />
+                                    :
+                                    stakeBalance === "bonding"
+
+                                        ?
+
+                                        <ListOfBounds
+                                            web3={_web3}
+                                            stake={_Stake}
+                                            dogeB={_dogeBalance}
+                                            loriaB={_loriaBalance}
+                                            loriaCoin={_LoriaCoin}
+                                            coin={_DogeCoin}
+                                            reward={_DogeReward} 
+                                        />
+
+                                        :
+
+                                        <ListOfMigrate
                                         web3={_web3}
                                         stake={_Stake}
                                         dogeB={_dogeBalance}
                                         loriaB={_loriaBalance}
                                         loriaCoin={_LoriaCoin}
                                         coin={_DogeCoin}
-                                        reward={_DogeReward}
-                                    />
-                                : <ListOfBounds />
+                                        reward={_DogeReward} 
+                                        />
                             }
 
                         </div>
