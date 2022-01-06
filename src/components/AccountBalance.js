@@ -11,7 +11,7 @@ import config from "../config.json";
 
 const { StakingAddress } = config;
 
-const duration = 24 * 25 * 3600;
+const duration = 24 * 3600;
 const locations = [
    {
       label: <span><img src={slogo} width="20px" height="20px" />MSDOGE</span>,
@@ -154,8 +154,8 @@ function AccountBalance(props) {
       list.map(item => {
          const updated_at = item._updated_at;
 
-         // let count = Math.floor((now - updated_at) / (duration * item._dogeEli));
-         let count = 1;
+         let count = Math.floor((now - updated_at) / (duration * item._dogeEli));
+         // let count = 1;
 
          if (item._stakedToken == 0) {
             stakedDogeAmount += Number(item._initBalance);

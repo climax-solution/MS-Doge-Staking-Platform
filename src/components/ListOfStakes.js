@@ -125,10 +125,10 @@ function ListOfStakes(props) {
                            _stakedList.map((item, idx) => {
                               const createdAt = new Date(Number(item._created_at) * 1000);
                               const updatedAt = Number(item._updated_at);
-                              const duration = 24 * 25 * 3600;
+                              const duration = 24 * 3600;
                               const elig = item._stakedToken == 1 ? item._dogeEli : item._loriaEli;
-                              // const claimable = _claimNow - updatedAt >= elig * duration ? true : false;
-                              const claimable = _claimNow - updatedAt >= 0 ? true : false;
+                              const claimable = _claimNow - updatedAt >= elig * duration ? true : false;
+                              // const claimable = _claimNow - updatedAt >= 0 ? true : false;
 
                               return (
                                  <tr className="m-0 mt-1" key={idx}>
