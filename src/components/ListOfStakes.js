@@ -57,7 +57,7 @@ function ListOfStakes(props) {
       const list = await _Staking.methods.getStakedList().call({ from: account });
       const now = await _Staking.methods.getNow().call();
       setStakedList(list);
-      setClaimNow(now);
+      setClaimNow(Number(now));
    }
 
    const Claim = async () => {
@@ -126,10 +126,9 @@ function ListOfStakes(props) {
                               const createdAt = new Date(Number(item._created_at) * 1000);
                               const updatedAt = Number(item._updated_at);
                               const duration = 24 * 3600;
-                              const elig = item._stakedToken == 1 ? item._dogeEli : item._loriaEli;
+                              const elig = Number(item._eligibility);
                               const claimable = _claimNow - updatedAt >= elig * duration ? true : false;
                               // const claimable = _claimNow - updatedAt >= 0 ? true : false;
-
                               return (
                                  <tr className="m-0 mt-1" key={idx}>
                                     <td className="p-2">
